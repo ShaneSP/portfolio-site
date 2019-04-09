@@ -4,11 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod --output-path docs --base-href /ShaneSP.github.io/",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postbuild": "cp CNAME docs/CNAME && cp docs/index.html docs/404.html"
+    "postbuild": "cp CNAME dist/angular-portfolio/CNAME && cp dist/angular-portfolio/index.html dist/angular-portfolio/404.html"
   },
   "private": true,
   "dependencies": {
@@ -33,6 +33,7 @@
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
+    "angular-cli-ghpages": "^0.5.3",
     "codelyzer": "~4.5.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
