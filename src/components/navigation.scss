@@ -7,4 +7,57 @@ nav {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  grid-area: sider;
+
+  .nav-items {
+    position: relative;
+    height: 100%;
+    outline: none;
+
+    .nav-item-wrapper {
+      color: #42526e;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      box-sizing: border-box;
+      user-select: none;
+      border-radius: 3px;
+      background-color: #fafbfc;
+      text-decoration: none;
+
+      .nav-item {
+        display: flex;
+        min-height: 24px;
+        align-items: center;
+        width: 100%;
+
+        .nav-item-icon {
+          display: flex;
+          height: 24px;
+          width: 24px;
+          align-items: center;
+          justify-content: center;
+          margin-right: 16px;
+        }
+
+        .nav-item-title {
+          flex-grow: 1;
+          text-align: left;
+          overflow: hidden;
+          outline: none;
+          display: flex;
+          flex-direction: column;
+          line-height: 1.22;
+
+          span {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+  }
 }

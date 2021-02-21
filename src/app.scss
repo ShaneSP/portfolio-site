@@ -1,0 +1,12 @@
+.content {
+  grid-area: content;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "header header header header"
+    "sider content content content";
+}
