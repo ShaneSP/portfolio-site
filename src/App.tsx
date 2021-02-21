@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import Header from "./components/Header";
+import Navigation from "./components/Navigation";
 
 interface ComponentProps {}
 interface ComponentState {}
@@ -7,7 +9,9 @@ class App extends Component<ComponentProps, ComponentState> {
   render() {
     return (
       <div>
-        <span>hello, world.</span>
+        <Header />
+        <Navigation />
+        {/* content */}
       </div>
     );
   }
