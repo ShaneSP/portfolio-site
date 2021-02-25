@@ -1,0 +1,78 @@
+.filter {
+  padding-left: 4px;
+  padding-right: 4px;
+
+  button {
+    align-items: baseline;
+    border-width: 0;
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: inline-flex;
+    font-size: inherit;
+    font-style: normal;
+    font-family: inherit;
+    font-weight: 500;
+    max-width: 100%;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.1s ease-out,
+      box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+    white-space: nowrap;
+    background: none;
+    color: #42526e !important;
+    cursor: pointer;
+    height: 2.2857142857142856em;
+    line-height: 2.2857142857142856em;
+    padding: 0 10px;
+    vertical-align: middle;
+    width: auto;
+    justify-content: center;
+    outline: none;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+    visibility: hidden;
+    opacity: 0;
+    min-width: 5rem;
+    position: absolute;
+    transition: all 0.5s ease;
+    margin-top: 1rem;
+    left: 0;
+    display: none;
+
+    &:hover,
+    &:focus-within,
+    &:focus {
+      visibility: visible;
+      opacity: 1;
+      display: block;
+    }
+
+    li {
+      color: #fff;
+      display: block;
+      float: left;
+      padding: 1rem;
+      position: relative;
+      text-decoration: none;
+      transition-duration: 0.5s;
+
+      a {
+        color: #fff;
+      }
+
+      &:hover,
+      &:focus-within {
+        cursor: pointer;
+      }
+
+      &:focus-within a {
+        outline: none;
+      }
+    }
+  }
+}

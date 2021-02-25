@@ -1,7 +1,24 @@
+html {
+  height: 100%;
+}
+
 body {
+  height: inherit;
   color: #000000;
   font-size: 13px;
   line-height: 1.3077;
   font-family: Arial, FreeSans, Helvetica, sans-serif;
   margin: 0;
+
+  #root {
+    height: inherit;
+  }
 }
+
+$base-color: #0052cc;
+$sider-background-color: #fafbfc;
+$content-background-color: #fff;
+
+$font-color-primary: #000;
+$font-color-secondary: #fff;
+$sider-font-color: #42526e;
