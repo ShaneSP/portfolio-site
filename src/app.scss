@@ -26,6 +26,7 @@
   .app {
     display: grid;
     height: 100%;
+    grid-template-rows: 72px auto;
     grid-template-columns: 250px repeat(3, 1fr);
     grid-template-areas:
       "header header header header"

@@ -14,7 +14,6 @@ class App extends Component<ComponentProps, ComponentState> {
         <Header />
         <Navigation />
         <Content />
-        {/* content */}
       </div>
     );
   }
