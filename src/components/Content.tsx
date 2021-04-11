@@ -5,36 +5,63 @@ import BoardColumn from "./BoardColumn";
 import "./content.scss";
 import Filter from "./Filter";
 
+const defaultCard = () => {
+  return {
+    id: uuid(),
+    title: "Card title",
+    description: "",
+    epic: { id: uuid(), title: "epic" },
+    labels: [
+      { id: uuid(), title: "label1" },
+      { id: uuid(), title: "label2" },
+    ],
+  };
+};
+const defaultColumns: BoardColumnType[] = [
+  {
+    id: uuid(),
+    cards: [
+      {
+        id: uuid(),
+        title:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        description: "",
+        epic: { id: uuid(), title: "Avatar Customization" },
+        labels: [
+          { id: uuid(), title: "label1" },
+          { id: uuid(), title: "label2" },
+        ],
+      },
+    ],
+    title: "To Do",
+  },
+  {
+    id: uuid(),
+    cards: [],
+    title: "In Progress",
+  },
+  {
+    id: uuid(),
+    cards: [],
+    title: "Done",
+  },
+];
+
 export default function Content() {
   const [groupBy, setGroupBy] = useState<string>(GroupBy.Epic);
-  const columns: BoardColumnType[] = [
-    {
-      id: uuid(),
-      cards: [
-        {
-          title: "Card title",
-          description: "",
-          epic: "epic",
-          epicId: "0",
-          label: "label",
-          labelId: "0",
-        },
-      ],
-      title: "To Do",
-    },
-    {
-      id: uuid(),
-      cards: [],
-      title: "In Progress",
-    },
-    {
-      id: uuid(),
-      cards: [],
-      title: "Done",
-    },
-  ];
-  const onCreate = (card: CardType) => {
-    console.log("Create clicked");
+  const [columns, setColumns] = useState<BoardColumnType[]>(defaultColumns);
+  const onCreate = (id: string) => () => {
+    setColumns(
+      columns.map((column) => {
+        if (column.id === id) {
+          return {
+            ...column,
+            cards: [...column.cards, defaultCard()],
+          };
+        }
+        return column;
+      })
+    );
   };
   return (
     <div className="content">
@@ -49,7 +76,11 @@ export default function Content() {
       </div>
       <div className="board">
         {columns.map((data) => (
-          <BoardColumn {...data} onCreate={onCreate} groupBy={groupBy} />
+          <BoardColumn
+            {...data}
+            onCreate={onCreate(data.id)}
+            groupBy={groupBy}
+          />
         ))}
       </div>
     </div>

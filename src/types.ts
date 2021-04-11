@@ -5,12 +5,21 @@ export interface BoardColumnType {
 }
 
 export interface CardType {
+  id: string;
   title: string;
   description: string;
-  label: string;
-  labelId: string;
-  epic: string;
-  epicId: string;
+  labels: LabelType[];
+  epic: EpicType;
+}
+
+export interface LabelType {
+  title: string;
+  id: string;
+}
+
+export interface EpicType {
+  title: string;
+  id: string;
 }
 
 export enum GroupBy {

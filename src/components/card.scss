@@ -3,7 +3,8 @@
 .card {
   cursor: pointer;
   display: flex;
-  margin: 2px 0;
+  margin: 2px 6px;
+  padding: 12px;
   max-width: 270px;
   box-sizing: border-box;
   flex-direction: column;
@@ -13,35 +14,53 @@
   background-color: rgb(255, 255, 255);
   color: rgb(23, 43, 77);
 
-  .card-content {
-    box-sizing: border-box;
+  .card-title {
+    margin-bottom: 8px;
+    width: 100%;
+  }
+
+  .card-epic {
     display: flex;
-    flex-direction: column;
-    padding: 12px;
+    justify-content: center;
+    align-items: center;
+    background-color: #eae6ff;
+    color: #403294;
+    border-radius: 3px;
+    cursor: default;
+    display: inline-flex;
+    position: relative;
+    height: 20px;
+    line-height: 1;
+    margin: 4px;
+    padding: 2px;
+    max-width: max-content;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 11px;
+    overflow: hidden;
+  }
 
-    .card-title {
-      margin-bottom: 8px;
-      width: 100%;
-    }
+  .card-tag-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
 
-    .card-tag-container {
+    span {
       display: flex;
-      flex-direction: row;
-      width: 100%;
-
-      span {
-        background-color: rgb(244, 245, 247);
-        color: rgb(37, 56, 88);
-        border-radius: 3px;
-        cursor: default;
-        display: inline-flex;
-        position: relative;
-        height: 20px;
-        line-height: 1;
-        margin: 4px;
-        padding: 0px;
-        overflow: hidden;
-      }
+      justify-content: center;
+      align-items: center;
+      background-color: rgb(244, 245, 247);
+      color: rgb(37, 56, 88);
+      border-radius: 3px;
+      cursor: default;
+      display: inline-flex;
+      position: relative;
+      height: 20px;
+      line-height: 1;
+      margin: 4px;
+      padding: 2px;
+      overflow: hidden;
     }
   }
 }

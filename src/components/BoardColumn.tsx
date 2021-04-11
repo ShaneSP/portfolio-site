@@ -8,7 +8,7 @@ interface BoardColumnProps {
   cards: CardType[];
   title: string;
   groupBy: string;
-  onCreate: (card: any) => void;
+  onCreate: () => void;
 }
 
 export default function BoardColumn(props: BoardColumnProps) {
