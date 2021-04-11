@@ -1,8 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
+import { v4 as uuid } from "uuid";
+import { BoardColumnType, CardType, GroupBy } from "types";
+import BoardColumn from "./BoardColumn";
 import "./content.scss";
 import Filter from "./Filter";
 
 export default function Content() {
+  const [groupBy, setGroupBy] = useState<string>(GroupBy.Epic);
+  const columns: BoardColumnType[] = [
+    {
+      id: uuid(),
+      cards: [
+        {
+          title: "Card title",
+          description: "",
+          epic: "epic",
+          epicId: "0",
+          label: "label",
+          labelId: "0",
+        },
+      ],
+      title: "To Do",
+    },
+    {
+      id: uuid(),
+      cards: [],
+      title: "In Progress",
+    },
+    {
+      id: uuid(),
+      cards: [],
+      title: "Done",
+    },
+  ];
+  const onCreate = (card: CardType) => {
+    console.log("Create clicked");
+  };
   return (
     <div className="content">
       <h1>Kanban Board</h1>
@@ -15,9 +48,9 @@ export default function Content() {
         </div>
       </div>
       <div className="board">
-        <div className="column"></div>
-        <div className="column"></div>
-        <div className="column"></div>
+        {columns.map((data) => (
+          <BoardColumn {...data} onCreate={onCreate} groupBy={groupBy} />
+        ))}
       </div>
     </div>
   );

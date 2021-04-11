@@ -1,0 +1,59 @@
+@import "../index.scss";
+
+.board-column {
+  flex: 1;
+  min-width: 270px;
+  max-width: 270px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  background-color: #f4f5f7;
+  margin-right: 20px;
+
+  .create-card {
+    align-items: center;
+    border-width: 0px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: inline-flex;
+    font-size: inherit;
+    font-style: normal;
+    font-family: inherit;
+    font-weight: 500;
+    max-width: 100%;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background 0.1s ease-out 0s,
+      box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38) 0s;
+    white-space: nowrap;
+    background: none;
+    cursor: pointer;
+    height: 36px;
+    line-height: 2.28571em;
+    padding: 0px 10px;
+    vertical-align: middle;
+    width: 100%;
+    -webkit-box-pack: center;
+    justify-content: flex-start;
+    outline: none;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: #42526e !important;
+
+    &:hover {
+      transition: background 0s ease-out 0s,
+        box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38) 0s;
+      background: #091e4214;
+    }
+
+    span {
+      text-align: left;
+      text-overflow: ellipsis;
+      overflow-x: hidden;
+    }
+  }
+}

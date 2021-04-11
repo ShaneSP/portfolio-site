@@ -1,0 +1,47 @@
+@import "../index.scss";
+
+.card {
+  cursor: pointer;
+  display: flex;
+  margin: 2px 0;
+  max-width: 270px;
+  box-sizing: border-box;
+  flex-direction: column;
+  border-radius: 3px;
+  box-shadow: rgb(23 43 77 / 20%) 0px 1px 1px, rgb(23 43 77 / 20%) 0px 0px 1px;
+  transition: background-color 140ms ease-in-out 0s, color 140ms ease-in-out 0s;
+  background-color: rgb(255, 255, 255);
+  color: rgb(23, 43, 77);
+
+  .card-content {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+
+    .card-title {
+      margin-bottom: 8px;
+      width: 100%;
+    }
+
+    .card-tag-container {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+
+      span {
+        background-color: rgb(244, 245, 247);
+        color: rgb(37, 56, 88);
+        border-radius: 3px;
+        cursor: default;
+        display: inline-flex;
+        position: relative;
+        height: 20px;
+        line-height: 1;
+        margin: 4px;
+        padding: 0px;
+        overflow: hidden;
+      }
+    }
+  }
+}
