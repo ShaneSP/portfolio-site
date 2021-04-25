@@ -4,8 +4,7 @@
   cursor: pointer;
   display: flex;
   margin: 2px 6px;
-  padding: 12px;
-  max-width: 270px;
+  padding: 48px 24px;
   box-sizing: border-box;
   flex-direction: column;
   border-radius: 3px;
@@ -13,10 +12,15 @@
   transition: background-color 140ms ease-in-out 0s, color 140ms ease-in-out 0s;
   background-color: rgb(255, 255, 255);
   color: rgb(23, 43, 77);
+  font-size: 40px;
+
+  @media (min-device-width: 812px) {
+    font-size: inherit;
+    padding: 12px;
+  }
 
   .card-title {
     margin-bottom: 8px;
-    width: 100%;
   }
 
   .card-epic {
@@ -29,16 +33,22 @@
     cursor: default;
     display: inline-flex;
     position: relative;
-    height: 20px;
+    height: 60px;
     line-height: 1;
     margin: 4px;
-    padding: 2px;
+    padding: 2px 4px;
     max-width: max-content;
     text-overflow: ellipsis;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    font-size: 11px;
+    font-size: 30px;
     overflow: hidden;
+
+    @media (min-device-width: 812px) {
+      font-size: 11px;
+      height: 20px;
+      padding: 2px;
+    }
   }
 
   .card-tag-container {
@@ -56,11 +66,18 @@
       cursor: default;
       display: inline-flex;
       position: relative;
-      height: 20px;
+      height: 60px;
       line-height: 1;
       margin: 4px;
-      padding: 2px;
+      padding: 2px 4px;
+      font-size: 30px;
       overflow: hidden;
+
+      @media (min-device-width: 812px) {
+        font-size: 11px;
+        height: 20px;
+        padding: 2px;
+      }
     }
   }
 }

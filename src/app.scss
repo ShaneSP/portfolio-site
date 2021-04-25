@@ -15,14 +15,14 @@
 .app {
   display: grid;
   height: 100%;
-  grid-template-rows: 72px auto;
+  grid-template-rows: 120px 120px auto;
   grid-template-areas:
     "header"
     "sider"
     "content";
 }
 
-@media (min-width: 600px) {
+@media (min-device-width: 812px) {
   .app {
     display: grid;
     height: 100%;

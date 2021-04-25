@@ -2,11 +2,14 @@
 
 .content {
   padding: 40px;
-  grid-area: content;
   background-color: $content-background-color;
-  width: 100%;
-  max-height: 100%;
-  height: 100%;
+
+  @media (max-device-width: 812px) {
+    padding: 0px 40px;
+    h1 {
+      font-size: 64px;
+    }
+  }
 
   .toolbar {
     display: flex;
@@ -15,7 +18,32 @@
     margin-bottom: 32px;
     align-items: center;
     white-space: nowrap;
-    width: 100%;
+    font-size: 40px;
+
+    @media (min-device-width: 812px) {
+      font-size: inherit;
+    }
+
+    .search {
+      outline: 0;
+      border-radius: 3.01px;
+      background-color: transparent;
+      border: 0px;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+      font-size: 40px;
+      outline: none;
+      padding: 8px 6px;
+      width: 100%;
+      height: 2.57143em;
+      line-height: 1.42857;
+
+      @media (min-device-width: 812px) {
+        font-size: 14px;
+        width: 33.33%;
+      }
+    }
 
     .filter-container {
       display: flex;
@@ -23,15 +51,17 @@
       padding-left: 4px;
       position: relative;
 
-      &:before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        height: 16px;
-        transform: translateY(-50%);
-        width: 1px;
-        left: 0px;
-        background: rgb(223, 225, 230);
+      @media (min-device-width: 812px) {
+        &:before {
+          content: "";
+          position: absolute;
+          top: 50%;
+          height: 16px;
+          transform: translateY(-50%);
+          width: 1px;
+          left: 0px;
+          background: rgb(223, 225, 230);
+        }
       }
     }
   }
@@ -40,5 +70,7 @@
     height: 100%;
     display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
   }
 }

@@ -67,7 +67,7 @@ export default function Content() {
     <div className="content">
       <h1>Kanban Board</h1>
       <div className="toolbar">
-        <input placeholder="search"></input>
+        <input className="search" placeholder="Search..."></input>
         <div className="filter-container">
           {["Epic", "Label"].map((title) => (
             <Filter title={title} options={Array(3).fill(Math.random() * 10)} />

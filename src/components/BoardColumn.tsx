@@ -23,7 +23,7 @@ export default function BoardColumn(props: BoardColumnProps) {
         <Card card={card} onSave={onSave(index)} />
       ))}
       <div className="create-card" onClick={onCreate}>
-        <AddIcon size={24} />
+        <AddIcon className="add-icon" size={24} />
         <span>Create new card</span>
       </div>
     </div>
