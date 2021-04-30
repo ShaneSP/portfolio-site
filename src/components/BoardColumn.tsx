@@ -11,10 +11,11 @@ interface BoardColumnProps {
   title: string;
   groupBy: string;
   onCreate: () => void;
+  onOpenCardDetail: (id: string) => () => void;
 }
 
 export default function BoardColumn(props: BoardColumnProps) {
-  const { id, cards, title, groupBy, onCreate } = props;
+  const { id, cards, title, groupBy, onCreate, onOpenCardDetail } = props;
   const onSave = (index: number) => (card: CardType) => {
     console.log("New card:", card);
   };
@@ -28,7 +29,12 @@ export default function BoardColumn(props: BoardColumnProps) {
             style={{ height: "100%", padding: "grid" }}
           >
             {cards.map((card, index) => (
-              <Card card={card} onSave={onSave(index)} index={index} />
+              <Card
+                card={card}
+                onSave={onSave(index)}
+                index={index}
+                onOpenDetail={onOpenCardDetail(card.id)}
+              />
             ))}
             <div
               className="create-card"

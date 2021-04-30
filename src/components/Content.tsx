@@ -5,6 +5,7 @@ import { BoardColumnType, CardType, EpicType, GroupBy } from "types";
 import BoardColumn from "./BoardColumn";
 import "./content.scss";
 import Filter from "./Filter";
+import Modal from "./Modal";
 
 const defaultCard = () => {
   return {
@@ -87,6 +88,8 @@ interface ContentProps {}
 interface ContentState {
   groupBy: GroupBy;
   columns: Map<string, BoardColumnType>;
+  searchTerm?: string;
+  cardDetailId?: string;
 }
 
 class Content extends Component<ContentProps, ContentState> {
@@ -167,13 +170,74 @@ class Content extends Component<ContentProps, ContentState> {
     }
   };
 
+  onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchTerm = event.target.value;
+    if (
+      searchTerm &&
+      searchTerm.length &&
+      this.state.searchTerm !== searchTerm
+    ) {
+      this.setState({
+        searchTerm,
+      });
+    } else if (searchTerm.length == 0) {
+      this.setState({
+        searchTerm: undefined,
+      });
+    }
+  };
+
+  onOpenCardDetail = (id: string) => () => {
+    this.setState({
+      cardDetailId: id,
+    });
+  };
+
+  onCloseCardDetail = () => {
+    this.setState({
+      cardDetailId: undefined,
+    });
+  };
+
+  getCardDetail = (id?: string): CardType | undefined => {
+    if (!id) return undefined;
+    const { columns } = this.state;
+    const cards = Array.from(columns.values()).reduce(
+      (all: CardType[], current) => all.concat(current.cards),
+      []
+    );
+    return cards.find((card) => card.id === id);
+  };
+
   render() {
-    const columns = Array.from(this.state.columns.values());
+    const { searchTerm, cardDetailId } = this.state;
+    let columns = Array.from(this.state.columns.values());
+    if (searchTerm && searchTerm.length) {
+      columns = columns.map((col) => {
+        return {
+          ...col,
+          cards: col.cards.filter(
+            (card) =>
+              card.description.includes(searchTerm) ||
+              card.epic.title.includes(searchTerm) ||
+              card.labels.some((label) => label.title.includes(searchTerm)) ||
+              card.title.includes(searchTerm)
+          ),
+        };
+      });
+    }
+    const cardDetail = this.getCardDetail(cardDetailId);
     return (
       <div className="content">
         <h1>Kanban Board</h1>
         <div className="toolbar">
-          <input className="search" placeholder="Search..."></input>
+          <input
+            type="search"
+            className="search"
+            placeholder="Search..."
+            onChange={this.onSearch}
+            value={searchTerm}
+          />
           <div className="filter-container">
             {["Epic", "Label"].map((title) => (
               <Filter
@@ -190,10 +254,20 @@ class Content extends Component<ContentProps, ContentState> {
                 {...data}
                 onCreate={this.onCreate(data.id)}
                 groupBy={this.state.groupBy}
+                onOpenCardDetail={this.onOpenCardDetail}
               />
             ))}
           </div>
         </DragDropContext>
+        {cardDetail && (
+          <Modal
+            key={`card-detail-${cardDetailId}`}
+            visible={!!cardDetail}
+            onClose={this.onCloseCardDetail}
+          >
+            {cardDetail.id}
+          </Modal>
+        )}
       </div>
     );
   }

@@ -2,17 +2,20 @@ import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { CardType } from "types";
 import "./card.scss";
-import { AddIcon } from "./icons/Add";
 
 interface CardProps {
   card: CardType;
   onSave: (card: CardType) => void;
   index: number;
+  onOpenDetail: () => void;
 }
 
 export default function Card(props: CardProps) {
-  const { card, onSave, index } = props;
+  const { card, onSave, index, onOpenDetail } = props;
   const { title, description, labels, epic } = card;
+  const onClick = () => {
+    onOpenDetail();
+  };
   return (
     <Draggable key={card.id} draggableId={card.id} index={index}>
       {(provided, snapshot) => (
@@ -20,6 +23,7 @@ export default function Card(props: CardProps) {
           ref={provided.innerRef}
           id={`card-${card.id}`}
           className="card"
+          onClick={onClick}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >

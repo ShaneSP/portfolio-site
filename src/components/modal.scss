@@ -1,0 +1,8 @@
+@import "../index.scss";
+
+.modal {
+  position: absolute;
+  background-color: $content-background-color;
+  width: 45px;
+  min-height: 20px;
+}
