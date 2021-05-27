@@ -229,7 +229,7 @@ class Content extends Component<ContentProps, ContentState> {
     const cardDetail = this.getCardDetail(cardDetailId);
     return (
       <div className="content">
-        <h1>Kanban Board</h1>
+        <h1>Resume Board</h1>
         <div className="toolbar">
           <input
             type="search"
@@ -259,10 +259,10 @@ class Content extends Component<ContentProps, ContentState> {
             ))}
           </div>
         </DragDropContext>
-        {cardDetail && (
+        {!!cardDetail && (
           <Modal
             key={`card-detail-${cardDetailId}`}
-            visible={!!cardDetail}
+            visible={true}
             onClose={this.onCloseCardDetail}
           >
             {cardDetail.id}
