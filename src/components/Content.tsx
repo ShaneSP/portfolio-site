@@ -259,11 +259,13 @@ class Content extends Component<ContentProps, ContentState> {
             ))}
           </div>
         </DragDropContext>
-        {!!cardDetail && (
+        {!!cardDetail && cardDetailId && (
           <Modal
             key={`card-detail-${cardDetailId}`}
             visible={true}
             onClose={this.onCloseCardDetail}
+            epic={cardDetail.epic.title}
+            id={cardDetailId}
           >
             {cardDetail.id}
           </Modal>

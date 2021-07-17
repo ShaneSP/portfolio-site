@@ -6,6 +6,8 @@ interface ModalProps {
   key: string;
   visible: boolean;
   onClose: () => void;
+  epic: string;
+  id: string;
 }
 interface ModalState {}
 
@@ -27,8 +29,8 @@ export default class Modal extends Component<ModalProps, ModalState> {
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
           <div className="modal-header">
             <div className="header-info">
-              <span></span>
-              <span></span>
+              <span>{this.props.epic}</span>
+              <span>SSP-{this.props.id.substring(0, 4).padStart(3, "0")}</span>
             </div>
             <CloseIcon size={24} onClick={this.onClose} />
           </div>
