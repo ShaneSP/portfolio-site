@@ -6,6 +6,8 @@ import BoardColumn from "./BoardColumn";
 import "./content.scss";
 import Filter from "./Filter";
 import Modal from "./Modal";
+import debounce from "lodash.debounce";
+import { DropdownMenu } from "./Dropdown";
 
 const defaultCard = () => {
   return {
@@ -93,12 +95,17 @@ interface ContentState {
 }
 
 class Content extends Component<ContentProps, ContentState> {
+  debounceSearch: any = undefined;
   constructor(props) {
     super(props);
     this.state = {
       groupBy: GroupBy.Epic,
       columns: new Map(defaultColumns.map((col) => [col.id, col])),
     };
+  }
+
+  componentDidMount() {
+    this.debounceSearch = debounce(this.search, 300);
   }
 
   getList = (id: string) => this.state.columns.get(id)?.cards;
@@ -170,21 +177,33 @@ class Content extends Component<ContentProps, ContentState> {
     }
   };
 
-  onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const searchTerm = event.target.value;
-    if (
-      searchTerm &&
-      searchTerm.length &&
-      this.state.searchTerm !== searchTerm
-    ) {
-      this.setState({
-        searchTerm,
+  search = (searchTerm?: string) => {
+    let columns = Array.from(this.state.columns.values());
+    if (searchTerm && searchTerm.length) {
+      columns = columns.map((col) => {
+        return {
+          ...col,
+          cards: col.cards.filter((card) =>
+            Object.values(card)
+              .join(" ")
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+          ),
+        };
       });
-    } else if (searchTerm.length == 0) {
+      this.setState({ columns: new Map(columns.map((col) => [col.id, col])) });
+    } else {
       this.setState({
-        searchTerm: undefined,
+        columns: new Map(defaultColumns.map((col) => [col.id, col])),
       });
     }
+  };
+
+  onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchTerm = event.target.value;
+    this.setState({ searchTerm }, () => {
+      this.debounceSearch(searchTerm);
+    });
   };
 
   onOpenCardDetail = (id: string) => () => {
@@ -212,20 +231,6 @@ class Content extends Component<ContentProps, ContentState> {
   render() {
     const { searchTerm, cardDetailId } = this.state;
     let columns = Array.from(this.state.columns.values());
-    if (searchTerm && searchTerm.length) {
-      columns = columns.map((col) => {
-        return {
-          ...col,
-          cards: col.cards.filter(
-            (card) =>
-              card.description.includes(searchTerm) ||
-              card.epic.title.includes(searchTerm) ||
-              card.labels.some((label) => label.title.includes(searchTerm)) ||
-              card.title.includes(searchTerm)
-          ),
-        };
-      });
-    }
     const cardDetail = this.getCardDetail(cardDetailId);
     return (
       <div className="content">
@@ -240,9 +245,15 @@ class Content extends Component<ContentProps, ContentState> {
           />
           <div className="filter-container">
             {["Epic", "Label"].map((title) => (
-              <Filter
+              <DropdownMenu
                 title={title}
-                options={Array(3).fill(Math.random() * 10)}
+                items={[
+                  {
+                    id: uuid(),
+                    label: "TO-DO",
+                  },
+                ]}
+                onClick={(id) => {}}
               />
             ))}
           </div>
@@ -267,7 +278,8 @@ class Content extends Component<ContentProps, ContentState> {
             epic={cardDetail.epic.title}
             id={cardDetailId}
           >
-            {cardDetail.id}
+            <h3>{cardDetail.title}</h3>
+            <p>{cardDetail.description}</p>
           </Modal>
         )}
       </div>
