@@ -9,16 +9,37 @@ import Modal from "./Modal";
 import debounce from "lodash.debounce";
 import { DropdownMenu } from "./Dropdown";
 
+const epics = [
+  {
+    id: uuid(),
+    title: "Avatar Customization",
+  },
+  {
+    id: uuid(),
+    title: "epic",
+  },
+];
+const labels = [
+  {
+    id: uuid(),
+    title: "label1",
+  },
+  {
+    id: uuid(),
+    title: "label2",
+  },
+];
+const filters = [
+  { title: "Epic", items: epics },
+  { title: "Label", items: labels },
+];
 const defaultCard = () => {
   return {
     id: uuid(),
     title: "Card title",
     description: "",
-    epic: { id: uuid(), title: "epic" },
-    labels: [
-      { id: uuid(), title: "label1" },
-      { id: uuid(), title: "label2" },
-    ],
+    epic: epics[1],
+    labels: [labels[Math.floor(Math.random() * 2)]],
   };
 };
 const defaultColumns: BoardColumnType[] = [
@@ -30,11 +51,8 @@ const defaultColumns: BoardColumnType[] = [
         title:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         description: "",
-        epic: { id: uuid(), title: "Avatar Customization" },
-        labels: [
-          { id: uuid(), title: "label1" },
-          { id: uuid(), title: "label2" },
-        ],
+        epic: epics[0],
+        labels: labels,
       },
     ],
     title: "To Do",
@@ -90,6 +108,8 @@ interface ContentProps {}
 interface ContentState {
   groupBy: GroupBy;
   columns: Map<string, BoardColumnType>;
+  filterByEpic?: string;
+  filterByLabel?: string;
   searchTerm?: string;
   cardDetailId?: string;
 }
@@ -228,9 +248,40 @@ class Content extends Component<ContentProps, ContentState> {
     return cards.find((card) => card.id === id);
   };
 
+  onFilterByEpicClick = (id?: string) => {
+    this.setState({
+      filterByEpic: id,
+    });
+  };
+
+  onFilterByLabelClick = (id?: string) => {
+    this.setState({
+      filterByLabel: id,
+    });
+  };
+
   render() {
-    const { searchTerm, cardDetailId } = this.state;
+    const { searchTerm, cardDetailId, filterByEpic, filterByLabel } =
+      this.state;
     let columns = Array.from(this.state.columns.values());
+    let activeEpicFilter;
+    let activeLabelFilter;
+    if (filterByEpic) {
+      activeEpicFilter = epics.find((f) => f.id === filterByEpic);
+      columns = columns.map((col) => ({
+        ...col,
+        cards: col.cards.filter((c) => c.epic.id === filterByEpic),
+      }));
+    }
+    if (filterByLabel) {
+      activeLabelFilter = labels.find((f) => f.id === filterByLabel);
+      columns = columns.map((col) => ({
+        ...col,
+        cards: col.cards.filter((c) =>
+          c.labels.find((l) => l.id === filterByLabel)
+        ),
+      }));
+    }
     const cardDetail = this.getCardDetail(cardDetailId);
     return (
       <div className="content">
@@ -244,18 +295,16 @@ class Content extends Component<ContentProps, ContentState> {
             value={searchTerm}
           />
           <div className="filter-container">
-            {["Epic", "Label"].map((title) => (
-              <DropdownMenu
-                title={title}
-                items={[
-                  {
-                    id: uuid(),
-                    label: "TO-DO",
-                  },
-                ]}
-                onClick={(id) => {}}
-              />
-            ))}
+            <DropdownMenu
+              title={activeEpicFilter?.title || "Epics"}
+              items={epics}
+              onClick={this.onFilterByEpicClick}
+            />
+            <DropdownMenu
+              title={activeLabelFilter?.title || "Label"}
+              items={labels}
+              onClick={this.onFilterByLabelClick}
+            />
           </div>
         </div>
         <DragDropContext onDragEnd={this.onDragEnd}>
