@@ -296,11 +296,13 @@ class Content extends Component<ContentProps, ContentState> {
           />
           <div className="filter-container">
             <DropdownMenu
+              key="epics-dropdown"
               title={activeEpicFilter?.title || "Epics"}
               items={epics}
               onClick={this.onFilterByEpicClick}
             />
             <DropdownMenu
+              key="labels-dropdown"
               title={activeLabelFilter?.title || "Label"}
               items={labels}
               onClick={this.onFilterByLabelClick}

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./dropdown.scss";
+import { ChevronDownIcon } from "./icons/Chevron";
 import { CloseCircleIcon } from "./icons/CloseCircle";
 import { useDetectOutsideClick } from "./useDetectOutsideClick";
 
@@ -48,11 +49,17 @@ export const DropdownMenu = (props: DropdownMenuProps) => {
     <div className="filter">
       <button onClick={onClick} className="menu-trigger">
         <span>{props.title}</span>
-        {isSelected && (
+        {isSelected ? (
           <CloseCircleIcon
             size={12}
             style={{ marginLeft: 5 }}
             onClick={onClearClick}
+          />
+        ) : (
+          <ChevronDownIcon
+            size={12}
+            style={{ marginLeft: 5 }}
+            transform={isActive ? "rotate(180)" : ""}
           />
         )}
       </button>

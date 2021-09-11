@@ -2,7 +2,7 @@ import React, { SVGProps } from "react";
 import { ReactComponent as CloseCircle } from "../../resources/svg/close_black_circle_24px.svg";
 
 interface CloseCircleIconProps extends SVGProps<any> {
-  size?: number;
+  size: number;
   style?: any;
 }
 
