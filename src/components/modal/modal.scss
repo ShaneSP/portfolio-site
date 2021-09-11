@@ -1,0 +1,116 @@
+@import "../../index.scss";
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  left: 0px;
+  right: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 1280px;
+  max-width: calc(100% - 120px);
+  min-height: 20px;
+  top: 60px;
+  z-index: 510;
+  position: absolute;
+  background-color: $content-background-color;
+  border-radius: 3px;
+  box-shadow: rgb(9 30 66 / 8%) 0px 0px 0px 1px, rgb(9 30 66 / 8%) 0px 2px 1px,
+    rgb(9 30 66 / 31%) 0px 0px 20px -6px;
+
+  .modal-header {
+    display: flex;
+    padding: 24px 24px 22px;
+    align-items: center;
+    flex: 0 0 auto;
+    justify-content: space-between;
+    min-height: 32px;
+
+    .header-info {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100%;
+      color: #6b778c;
+
+      :first-child:after {
+        content: "/";
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100%;
+    }
+  }
+
+  .modal-body {
+    display: grid;
+    height: 100%;
+    grid-template-rows: auto;
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas: "modal-body-content modal-body-sider";
+
+    .modal-body-content {
+      grid-area: modal-body-content;
+      padding: 0px 24px 32px 32px;
+
+      .modal-body-title {
+        display: flex;
+        flex: 1 0 auto;
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: border-box;
+        padding: 6px;
+        min-width: 0px;
+        max-width: 100%;
+        width: 100%;
+        min-height: 40px;
+
+        background-color: transparent;
+        border-color: transparent;
+        border-radius: 3px;
+        border-style: solid;
+        border-width: 2px;
+        color: rgb(9, 30, 66);
+        font-size: 12px;
+        line-height: 1.42857;
+        overflow: hidden;
+        transition: background-color 0.2s ease-in-out 0s,
+          border-color 0.2s ease-in-out 0s;
+        overflow-wrap: break-word;
+
+        h1 {
+          padding: 0;
+          margin: 0;
+        }
+
+        &:hover {
+          background-color: #ebecf0;
+        }
+      }
+    }
+
+    .modal-body-sider {
+      height: 100%;
+      grid-area: modal-body-sider;
+    }
+  }
+}
+
+.modal {
+  position: fixed;
+  z-index: 9;
+  top: 0;
+  left: 0;
+  // right: 0;
+  // bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

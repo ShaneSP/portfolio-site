@@ -2,8 +2,8 @@ import React from "react";
 import { Droppable } from "react-beautiful-dnd";
 import { CardType } from "types";
 import "./boardColumn.scss";
-import Card from "./Card";
-import { AddIcon } from "./icons/Add";
+import Card from "../card/Card";
+import { AddIcon } from "../icons/Add";
 
 interface BoardColumnProps {
   id: string;

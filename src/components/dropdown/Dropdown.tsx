@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./dropdown.scss";
-import { ChevronDownIcon } from "./icons/Chevron";
-import { CloseCircleIcon } from "./icons/CloseCircle";
-import { useDetectOutsideClick } from "./useDetectOutsideClick";
+import { ChevronDownIcon } from "../icons/Chevron";
+import { CloseCircleIcon } from "../icons/CloseCircle";
+import { useDetectOutsideClick } from "../hooks/useDetectOutsideClick";
 
 interface DropdownMenuProps {
   title: string;

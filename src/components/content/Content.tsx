@@ -1,13 +1,12 @@
 import React, { useState, Component } from "react";
+import debounce from "lodash.debounce";
 import { v4 as uuid } from "uuid";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { BoardColumnType, CardType, EpicType, GroupBy } from "types";
-import BoardColumn from "./BoardColumn";
+import BoardColumn from "../column/BoardColumn";
+import Modal from "../modal/Modal";
+import { DropdownMenu } from "../dropdown/Dropdown";
 import "./content.scss";
-import Filter from "./Filter";
-import Modal from "./Modal";
-import debounce from "lodash.debounce";
-import { DropdownMenu } from "./Dropdown";
 
 const epics = [
   {
@@ -326,8 +325,7 @@ class Content extends Component<ContentProps, ContentState> {
             key={`card-detail-${cardDetailId}`}
             visible={true}
             onClose={this.onCloseCardDetail}
-            epic={cardDetail.epic.title}
-            id={cardDetailId}
+            cardDetail={cardDetail}
           >
             <h3>{cardDetail.title}</h3>
             <p>{cardDetail.description}</p>

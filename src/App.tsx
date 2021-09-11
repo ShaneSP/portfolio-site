@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Header from "./components/Header";
-import Navigation from "./components/Navigation";
+import Header from "./components/header/Header";
+import Navigation from "./components/navigation/Navigation";
 import "./app.scss";
-import Content from "components/Content";
+import Content from "components/content/Content";
 
 interface ComponentProps {}
 interface ComponentState {}
