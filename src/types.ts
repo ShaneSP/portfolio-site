@@ -24,8 +24,9 @@ export interface EpicType {
 }
 
 export enum GroupBy {
-  Epic = "EPIC",
-  Label = "LABEL",
+  EPIC = "Epic",
+  LABEL = "Label",
+  ASSIGNEE = "Assignee",
 }
 
 export enum StatusType {

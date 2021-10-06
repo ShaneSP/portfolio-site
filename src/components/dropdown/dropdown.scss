@@ -16,7 +16,7 @@
   font-size: 14px;
   font-style: normal;
   font-family: inherit;
-  font-weight: 500;
+  font-weight: bold;
   max-width: 100%;
   position: relative;
   text-align: center;
@@ -34,6 +34,23 @@
   width: auto;
   justify-content: center;
   outline: none;
+      
+  &:active {
+    background-color: #d1e5ff;
+
+    span {
+      color: #0454cd;
+    }
+  }
+}
+
+.menu-trigger.active {
+  background-color: #253858;
+  color: #f4f5f7 !important;
+
+  &:active span {
+    color: #f4f5f7 !important;
+  }
 }
 
 .menu-trigger.primary {
@@ -58,6 +75,7 @@
   visibility: hidden;
   transform: translateY(-20px);
   transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+  box-shadow: rgb(9 30 66 / 25%) 0px 4px 8px -2px, rgb(9 30 66 / 31%) 0px 0px 1px;
 }
 
 .menu.active {

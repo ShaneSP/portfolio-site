@@ -45,7 +45,7 @@
 
     .filter-container {
       display: flex;
-      margin-left: 12px;
+      margin-left: 24px;
       padding-left: 4px;
       position: relative;
 
@@ -57,8 +57,32 @@
           height: 16px;
           transform: translateY(-50%);
           width: 1px;
-          left: 0px;
+          left: -24px;
           background: rgb(223, 225, 230);
+        }
+      }
+    }
+
+    .groupBy-container {
+      display: flex;
+      align-items: center;
+
+      .groupBy-label {
+        font-size: 11px;
+        color: rgb(94, 108, 132);
+        text-transform: uppercase;
+        padding: 0px 8px;
+      }
+
+      .groupBy-dropdown {
+        background-color: #f5f6f8;
+
+        span {
+          font-weight: bold;
+        }
+
+        svg {
+          stroke-width: 4;
         }
       }
     }

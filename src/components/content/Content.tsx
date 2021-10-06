@@ -28,9 +28,10 @@ const labels = [
     title: "label2",
   },
 ];
-const filters = [
-  { title: "Epic", items: epics },
-  { title: "Label", items: labels },
+const groupByOptions = [
+  { id: GroupBy.ASSIGNEE, title: GroupBy.ASSIGNEE },
+  { id: GroupBy.EPIC, title: GroupBy.EPIC },
+  { id: GroupBy.LABEL, title: GroupBy.LABEL },
 ];
 const defaultCard = () => {
   return {
@@ -133,7 +134,7 @@ class Content extends Component<ContentProps, ContentState> {
   constructor(props) {
     super(props);
     this.state = {
-      groupBy: GroupBy.Epic,
+      groupBy: GroupBy.ASSIGNEE,
       columns: new Map(defaultColumns.map((col) => [col.id, col])),
     };
   }
@@ -284,6 +285,13 @@ class Content extends Component<ContentProps, ContentState> {
     });
   };
 
+  // Clearing groupBy defaults back to group by assigneee
+  onGroupByClick = (id: GroupBy = GroupBy.ASSIGNEE) => {
+    this.setState({
+      groupBy: id,
+    });
+  };
+
   onCardStatusChange = (
     cardId: string,
     sourceId: string,
@@ -329,7 +337,7 @@ class Content extends Component<ContentProps, ContentState> {
   };
 
   render() {
-    const { searchTerm, cardDetailId, filterByEpic, filterByLabel } =
+    const { searchTerm, cardDetailId, filterByEpic, filterByLabel, groupBy } =
       this.state;
     let columns = Array.from(this.state.columns.values());
     let activeEpicFilter;
@@ -355,27 +363,42 @@ class Content extends Component<ContentProps, ContentState> {
       <div className="content">
         <h1>Resume Board</h1>
         <div className="toolbar">
-          <input
-            type="search"
-            className="search"
-            placeholder="Search..."
-            onChange={this.onSearch}
-            value={searchTerm}
-          />
-          <div className="filter-container">
-            <DropdownMenu
-              placeholder="Select an epic"
-              key="epics-dropdown"
-              title={activeEpicFilter?.title || "Epics"}
-              items={epics}
-              onClick={this.onFilterByEpicClick}
+          <div
+            style={{ display: "flex", flex: "1 1 0%", flexDirection: "row" }}
+          >
+            <input
+              type="search"
+              className="search"
+              placeholder="Search..."
+              onChange={this.onSearch}
+              value={searchTerm}
             />
+            <div className="filter-container">
+              <DropdownMenu
+                placeholder="Select an epic"
+                key="epics-dropdown"
+                title={activeEpicFilter?.title || "Epics"}
+                items={epics}
+                onClick={this.onFilterByEpicClick}
+              />
+              <DropdownMenu
+                placeholder="Select a label"
+                key="labels-dropdown"
+                title={activeLabelFilter?.title || "Label"}
+                items={labels}
+                onClick={this.onFilterByLabelClick}
+              />
+            </div>
+          </div>
+          <div className="groupBy-container">
+            <div className="groupBy-label">Group by</div>
             <DropdownMenu
-              placeholder="Select a label"
-              key="labels-dropdown"
-              title={activeLabelFilter?.title || "Label"}
-              items={labels}
-              onClick={this.onFilterByLabelClick}
+              placeholder="Group by"
+              key="groupBy-dropdown"
+              className="groupBy-dropdown"
+              title={groupBy}
+              items={groupByOptions}
+              onClick={this.onGroupByClick}
             />
           </div>
         </div>

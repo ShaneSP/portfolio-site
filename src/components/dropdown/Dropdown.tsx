@@ -7,11 +7,12 @@ import { useDetectOutsideClick } from "../hooks/useDetectOutsideClick";
 interface DropdownMenuProps {
   placeholder: string;
   title?: string;
-  onClick: (id?: string) => void;
+  onClick: (id?: any) => void;
   items: { id: string; title: string }[];
   showClear?: boolean;
   style?: any;
   type?: "primary" | "default";
+  className?: string;
 }
 
 export const DropdownMenu = ({
@@ -22,6 +23,7 @@ export const DropdownMenu = ({
   showClear = true,
   style,
   type = "default",
+  className,
 }: DropdownMenuProps) => {
   const dropdownRef = useRef<HTMLElement>(null);
   const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);
@@ -58,8 +60,11 @@ export const DropdownMenu = ({
   }, [isActive]);
 
   return (
-    <div className="filter" style={style}>
-      <button onClick={onDropdownClick} className={`menu-trigger ${type}`}>
+    <div style={style} className={className}>
+      <button
+        onClick={onDropdownClick}
+        className={`menu-trigger ${type} ${isActive ? "active" : "inactive"}`}
+      >
         <span>{title || placeholder}</span>
         {showClear && isSelected ? (
           <CloseCircleIcon
