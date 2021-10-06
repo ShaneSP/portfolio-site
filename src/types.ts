@@ -1,7 +1,7 @@
 export interface BoardColumnType {
   id: string;
   cards: CardType[];
-  title: string;
+  title: StatusType;
 }
 
 export interface CardType {
@@ -10,6 +10,7 @@ export interface CardType {
   description: string;
   labels: LabelType[];
   epic: EpicType;
+  columnId: string;
 }
 
 export interface LabelType {
@@ -25,4 +26,11 @@ export interface EpicType {
 export enum GroupBy {
   Epic = "EPIC",
   Label = "LABEL",
+}
+
+export enum StatusType {
+  TODO = "To Do",
+  INPROGRESS = "In Progress",
+  DONE = "Done",
+  MISCELLANEOUS = "Miscellaneous",
 }

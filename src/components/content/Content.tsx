@@ -2,9 +2,9 @@ import React, { useState, Component } from "react";
 import debounce from "lodash.debounce";
 import { v4 as uuid } from "uuid";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { BoardColumnType, CardType, EpicType, GroupBy } from "types";
+import { BoardColumnType, CardType, GroupBy, StatusType } from "types";
 import BoardColumn from "../column/BoardColumn";
-import Modal from "../modal/Modal";
+import CardDetailModal from "../modal/CardDetailModal";
 import { DropdownMenu } from "../dropdown/Dropdown";
 import "./content.scss";
 
@@ -39,32 +39,47 @@ const defaultCard = () => {
     description: "",
     epic: epics[1],
     labels: [labels[Math.floor(Math.random() * 2)]],
+    columnId: columnIds[1],
   };
 };
+const columnIds = [uuid(), uuid(), uuid(), uuid()];
 const defaultColumns: BoardColumnType[] = [
   {
-    id: uuid(),
+    id: columnIds[0],
     cards: [
       {
         id: uuid(),
         title:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        description: "",
+        description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+          do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco
+          laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+          irure dolor in reprehenderit in voluptate velit esse cillum
+          dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+          cupidatat non proident, sunt in culpa qui officia deserunt
+          mollit anim id est laborum.`,
         epic: epics[0],
         labels: labels,
+        columnId: columnIds[0],
       },
     ],
-    title: "To Do",
+    title: StatusType.TODO,
   },
   {
-    id: uuid(),
+    id: columnIds[1],
     cards: [defaultCard(), defaultCard(), defaultCard()],
-    title: "In Progress",
+    title: StatusType.INPROGRESS,
   },
   {
-    id: uuid(),
+    id: columnIds[2],
     cards: [],
-    title: "Done",
+    title: StatusType.DONE,
+  },
+  {
+    id: columnIds[3],
+    cards: [],
+    title: StatusType.MISCELLANEOUS,
   },
 ];
 
@@ -172,6 +187,16 @@ class Content extends Component<ContentProps, ContentState> {
       const sourceColumn = this.state.columns.get(source.droppableId);
       const destinationColumn = this.state.columns.get(destination.droppableId);
       if (sourceColumn && destinationColumn) {
+        sourceColumn.cards = sourceColumn.cards.map((card, i) => {
+          if (i === source.index) {
+            return {
+              ...card,
+              columnId: destination.droppableId,
+            };
+          }
+          return card;
+        });
+
         const result = move(
           sourceColumn.cards,
           destinationColumn.cards,
@@ -259,6 +284,50 @@ class Content extends Component<ContentProps, ContentState> {
     });
   };
 
+  onCardStatusChange = (
+    cardId: string,
+    sourceId: string,
+    destinationId: string
+  ) => {
+    if (sourceId !== destinationId) {
+      const sourceColumn = this.state.columns.get(sourceId);
+      const destinationColumn = this.state.columns.get(destinationId);
+      if (sourceColumn && destinationColumn) {
+        const index = sourceColumn.cards.findIndex(
+          (card) => card.id === cardId
+        );
+        sourceColumn.cards = sourceColumn.cards.map((card, i) => {
+          if (i === index) {
+            return {
+              ...card,
+              columnId: destinationId,
+            };
+          }
+          return card;
+        });
+
+        const sourceCards = Array.from(sourceColumn.cards);
+        const destinationCards = Array.from(destinationColumn.cards);
+        const [removed] = sourceCards.splice(index, 1);
+        destinationCards.push(removed);
+
+        this.setState({
+          columns: new Map(
+            this.state.columns
+              .set(sourceId, {
+                ...sourceColumn,
+                cards: sourceCards,
+              })
+              .set(destinationId, {
+                ...destinationColumn,
+                cards: destinationCards,
+              })
+          ),
+        });
+      }
+    }
+  };
+
   render() {
     const { searchTerm, cardDetailId, filterByEpic, filterByLabel } =
       this.state;
@@ -295,12 +364,14 @@ class Content extends Component<ContentProps, ContentState> {
           />
           <div className="filter-container">
             <DropdownMenu
+              placeholder="Select an epic"
               key="epics-dropdown"
               title={activeEpicFilter?.title || "Epics"}
               items={epics}
               onClick={this.onFilterByEpicClick}
             />
             <DropdownMenu
+              placeholder="Select a label"
               key="labels-dropdown"
               title={activeLabelFilter?.title || "Label"}
               items={labels}
@@ -321,15 +392,17 @@ class Content extends Component<ContentProps, ContentState> {
           </div>
         </DragDropContext>
         {!!cardDetail && cardDetailId && (
-          <Modal
+          <CardDetailModal
             key={`card-detail-${cardDetailId}`}
             visible={true}
             onClose={this.onCloseCardDetail}
             cardDetail={cardDetail}
+            onCardStatusChange={this.onCardStatusChange}
+            columns={columns}
           >
             <h3>{cardDetail.title}</h3>
             <p>{cardDetail.description}</p>
-          </Modal>
+          </CardDetailModal>
         )}
       </div>
     );
