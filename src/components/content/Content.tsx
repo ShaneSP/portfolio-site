@@ -399,6 +399,7 @@ class Content extends Component<ContentProps, ContentState> {
               title={groupBy}
               items={groupByOptions}
               onClick={this.onGroupByClick}
+              showClear={false}
             />
           </div>
         </div>
