@@ -1,0 +1,124 @@
+.collapsible-container {
+  display: block;
+  flex-grow: 1;
+  overflow: hidden;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+
+  .collapsible-action {
+    position: relative;
+    display: flex;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    height: 48px;
+    border-radius: 4px 4px 0px 0px;
+    border: 1px solid #dfe1e6;
+    align-items: center;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    background-color: #fff;
+    transition: background-color 0.1s ease-in-out 0s;
+
+    &:hover {
+      background-color: #ebecf0;
+    }
+
+    strong {
+      color: #172b4d;
+      font-size: 14px;
+      padding-right: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 60%;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    span {
+      max-width: 280px;
+      color: #8993a4;
+      font-size: 12px;
+      padding-right: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.42857 !important;
+      letter-spacing: 0.04em;
+    }
+
+    .icon {
+      margin-left: auto;
+      display: flex;
+    }
+  }
+
+  .collapsible-content {
+    padding: 8px 12px;
+    box-sizing: border-box;
+    display: none;
+
+    .field-container {
+      margin-bottom: 12px;
+
+      .field-label {
+        position: relative;
+        flex-grow: 1;
+        box-sizing: border-box;
+        padding-right: 24px;
+        min-width: 120px;
+        width: 40%;
+        padding-top: 8px;
+        max-width: 170px;
+        font-size: 12px;
+        line-height: 1;
+        color: #42526e;
+      }
+
+      .field-value {
+        box-sizing: border-box;
+        display: flex;
+        flex: 0 1 auto;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        flex-grow: 1;
+        width: 100%;
+        max-width: 100%;
+        min-height: 32px;
+        margin-left: -6px;
+        padding-left: 6px;
+        background-color: transparent;
+        transition: background-color 0.2s ease-in-out 0s;
+        color: #5e6c84;
+        font-size: 14px;
+        line-height: 1.42857;
+        border-color: transparent;
+        border-radius: 3px;
+        overflow-wrap: break-word;
+
+        &:hover {
+          background-color: #ebecf0;
+        }
+      }
+    }
+  }
+
+  .collapsible-content.active {
+    border-width: 0px 1px 1px;
+    border-right-style: solid;
+    border-bottom-style: solid;
+    border-left-style: solid;
+    border-right-color: #dfe1e6;
+    border-bottom-color: #dfe1e6;
+    border-left-color: #dfe1e6;
+    border-image: initial;
+    border-top-style: initial;
+    border-top-color: initial;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    display: block;
+    visibility: visible;
+
+  }
+}

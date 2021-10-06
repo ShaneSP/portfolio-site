@@ -1,0 +1,64 @@
+@import "../../index.scss";
+
+button {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  vertical-align: middle;
+  border-width: 0px;
+  border-radius: 3px;
+  box-sizing: border-box;
+  padding: 0px 10px;
+  margin: 0px;
+
+  font-size: inherit;
+  font-style: normal;
+  font-family: inherit;
+  font-weight: 500;
+
+  width: auto;
+  max-width: 100%;
+  height: 2.28571em;
+  line-height: 2.28571em;
+
+  position: relative;
+
+  text-align: center;
+  text-decoration: none;
+
+  transition: background 0.1s ease-out 0s,
+    box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38) 0s;
+  white-space: nowrap;
+  background: rgba(9, 30, 66, 0.04);
+  cursor: pointer;
+  outline: none;
+  color: #42526e !important;
+
+  &:hover {
+    background: rgba(9, 30, 66, 0.08);
+  }
+
+  .title {
+    transition: opacity 0.3s;
+    opacity: 1;
+    margin: 0 2px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .icon {
+    transition: opacity 0.3s;
+    opacity: 1;
+    align-self: center;
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    line-height: 0;
+    font-size: 0;
+    user-select: none;
+    margin: 0 2px;
+  }
+}

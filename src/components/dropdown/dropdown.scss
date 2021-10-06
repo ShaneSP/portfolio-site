@@ -13,7 +13,7 @@
   border-radius: 3px;
   box-sizing: border-box;
   display: inline-flex;
-  font-size: inherit;
+  font-size: 14px;
   font-style: normal;
   font-family: inherit;
   font-weight: 500;
@@ -27,13 +27,28 @@
   background: none;
   color: #42526e !important;
   cursor: pointer;
-  height: 2.2857142857142856em;
-  line-height: 2.2857142857142856em;
+  height: 2.3em;
+  line-height: 2.3em;
   padding: 0 10px;
   vertical-align: middle;
   width: auto;
   justify-content: center;
   outline: none;
+}
+
+.menu-trigger.primary {
+  background-color: #0052cc !important;
+  color: #fff !important;
+  font-weight: 600;
+
+  &:hover {
+    background-color: #0747a6 !important
+  }
+
+  &:active {
+    background-color: #d1e5ff !important;
+    color: #0454cd !important;
+  }
 }
 
 .menu {

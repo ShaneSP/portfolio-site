@@ -5,28 +5,40 @@ import { CloseCircleIcon } from "../icons/CloseCircle";
 import { useDetectOutsideClick } from "../hooks/useDetectOutsideClick";
 
 interface DropdownMenuProps {
-  title: string;
+  placeholder: string;
+  title?: string;
   onClick: (id?: string) => void;
   items: { id: string; title: string }[];
+  showClear?: boolean;
+  style?: any;
+  type?: "primary" | "default";
 }
 
-export const DropdownMenu = (props: DropdownMenuProps) => {
+export const DropdownMenu = ({
+  placeholder,
+  title,
+  onClick,
+  items,
+  showClear = true,
+  style,
+  type = "default",
+}: DropdownMenuProps) => {
   const dropdownRef = useRef<HTMLElement>(null);
   const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);
   const [isSelected, setIsSelected] = useState(false);
-  const onClick = () => {
+  const onDropdownClick = () => {
     setIsActive(!isActive);
   };
   const onItemClick = (id: string) => {
     setIsActive(!isActive);
     setIsSelected(true);
-    props.onClick(id);
+    onClick(id);
   };
   const onClearClick = (e) => {
     e.stopPropagation();
     setIsSelected(false);
     setIsActive(false);
-    props.onClick(undefined);
+    onClick(undefined);
   };
   useEffect(() => {
     const pageClickEvent = (e) => {
@@ -46,10 +58,10 @@ export const DropdownMenu = (props: DropdownMenuProps) => {
   }, [isActive]);
 
   return (
-    <div className="filter">
-      <button onClick={onClick} className="menu-trigger">
-        <span>{props.title}</span>
-        {isSelected ? (
+    <div className="filter" style={style}>
+      <button onClick={onDropdownClick} className={`menu-trigger ${type}`}>
+        <span>{title || placeholder}</span>
+        {showClear && isSelected ? (
           <CloseCircleIcon
             size={12}
             style={{ marginLeft: 5 }}
@@ -60,6 +72,7 @@ export const DropdownMenu = (props: DropdownMenuProps) => {
             size={12}
             style={{ marginLeft: 5 }}
             transform={isActive ? "rotate(180)" : ""}
+            strokeWidth={type === "primary" ? "4" : undefined}
           />
         )}
       </button>
@@ -68,7 +81,7 @@ export const DropdownMenu = (props: DropdownMenuProps) => {
         className={`menu ${isActive ? "active" : "inactive"}`}
       >
         <ul className="dropdown">
-          {props.items.map((item) => (
+          {items.map((item) => (
             <li>
               <a onClick={() => onItemClick(item.id)}>{item.title}</a>
             </li>
