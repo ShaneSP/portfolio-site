@@ -1,0 +1,17 @@
+<svg
+  id="a9d76bce-1ccb-4377-a98d-99f8f6c42293"
+  data-name="Layer 1"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+>
+  <rect y="8.05" width="2.1" height="12" fill="currentColor" />
+  <path
+    d="M20.92,12.22,19.1,18.1A2.8,2.8,0,0,1,16.3,20H6.3V9.22L8.1,3.64A2.19,2.19,0,0,1,10.34,2,2.12,2.12,0,0,1,12.6,3.94V9.2h5.53c1.84,0,3.21,1.48,2.79,3Z"
+    transform="translate(-2.05 -0.95)"
+    fill="none"
+    stroke="currentColor"
+    stroke-miterlimit="10"
+    stroke-width="2.1"
+    fill-rule="evenodd"
+  />
+</svg>
