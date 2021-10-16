@@ -1,30 +1,36 @@
-import { useState, useEffect } from "react";
-
+import { useCallback, useEffect, useState, useRef } from "react";
+interface Containable extends HTMLElement {
+  contains: (target: EventTarget | null) => boolean;
+}
 /**
  * Hook for handling closing when clicking outside of an element
- * @param {React.node} el
+ * @param {React.node} ref
  * @param {boolean} initialState
  */
-export const useDetectOutsideClick = (el, initialState) => {
+export const useDetectOutsideClick = (initialState) => {
+  const ref = useRef<Containable>(null);
   const [isActive, setIsActive] = useState(initialState);
 
-  useEffect(() => {
-    const onClick = (e) => {
+  const onClick = useCallback(
+    (e: MouseEvent) => {
       // If the active element exists and is clicked outside of
-      if (el.current !== null && !el.current.contains(e.target)) {
-        setIsActive(!isActive);
+      if (ref && ref.current && !ref.current.contains(e.target)) {
+        setIsActive(false);
       }
-    };
+    },
+    [ref.current]
+  );
 
+  useEffect(() => {
     // If the item is active (ie open) then listen for clicks outside
     if (isActive) {
-      window.addEventListener("click", onClick);
+      window.addEventListener("click", onClick, true);
     }
 
     return () => {
-      window.removeEventListener("click", onClick);
+      window.removeEventListener("click", onClick, true);
     };
-  }, [isActive, el]);
+  }, [isActive, ref.current]);
 
-  return [isActive, setIsActive];
+  return [isActive, setIsActive, ref];
 };

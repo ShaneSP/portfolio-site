@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import "./dropdown.scss";
 import { ChevronDownIcon } from "../icons/Chevron";
 import { CloseCircleIcon } from "../icons/CloseCircle";
@@ -25,8 +25,7 @@ export const DropdownMenu = ({
   type = "default",
   className,
 }: DropdownMenuProps) => {
-  const dropdownRef = useRef<HTMLElement>(null);
-  const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);
+  const [isActive, setIsActive, dropdownRef] = useDetectOutsideClick(false);
   const [isSelected, setIsSelected] = useState(false);
   const onDropdownClick = () => {
     setIsActive(!isActive);
@@ -42,22 +41,6 @@ export const DropdownMenu = ({
     setIsActive(false);
     onClick(undefined);
   };
-  useEffect(() => {
-    const pageClickEvent = (e) => {
-      if (
-        dropdownRef.current !== null &&
-        !dropdownRef.current?.contains(e.target)
-      ) {
-        setIsActive(!isActive);
-      }
-    };
-    if (isActive) {
-      window.addEventListener("click", pageClickEvent);
-    }
-    return () => {
-      window.removeEventListener("click", pageClickEvent);
-    };
-  }, [isActive]);
 
   return (
     <div style={style} className={className}>
@@ -81,11 +64,8 @@ export const DropdownMenu = ({
           />
         )}
       </button>
-      <nav
-        ref={dropdownRef}
-        className={`menu ${isActive ? "active" : "inactive"}`}
-      >
-        <ul className="dropdown">
+      <nav className={`menu ${isActive ? "active" : "inactive"}`}>
+        <ul className="dropdown" ref={dropdownRef}>
           {items.map((item) => (
             <li>
               <a onClick={() => onItemClick(item.id)}>{item.title}</a>
