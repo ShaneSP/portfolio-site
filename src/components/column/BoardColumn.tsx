@@ -1,6 +1,6 @@
 import React from "react";
 import { Droppable } from "react-beautiful-dnd";
-import { CardType } from "types";
+import { CardType } from "constants/types";
 import "./boardColumn.scss";
 import Card from "../card/Card";
 import { AddIcon } from "../icons/Add";

@@ -12,7 +12,7 @@ import { SortIcon } from "components/icons/Sort";
 import { TreeNodeIcon } from "components/icons/TreeNode";
 import { OpenLockIcon } from "components/icons/OpenLock";
 import React, { Component, createRef } from "react";
-import { BoardColumnType, CardType, StatusType } from "types";
+import { BoardColumnType, CardType } from "constants/types";
 import { CloseIcon } from "../icons/Close";
 import "./cardDetailModal.scss";
 import { DropdownMenu } from "components/dropdown/Dropdown";
