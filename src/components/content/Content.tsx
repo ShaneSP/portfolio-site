@@ -333,18 +333,28 @@ class Content extends Component<ContentProps, ContentState> {
             />
           </div>
         </div>
-        <DragDropContext onDragEnd={this.onDragEnd}>
-          <div className="board">
+        <div className="column-group">
+          <div className="column-title-container">
             {columns.map((data) => (
-              <BoardColumn
-                {...data}
-                onCreate={this.onCreate(data.id)}
-                groupBy={this.state.groupBy}
-                onOpenCardDetail={this.onOpenCardDetail}
-              />
+              <div className="title-container">
+                <h3>{data.title.toUpperCase()}</h3>
+              </div>
             ))}
           </div>
-        </DragDropContext>
+          <div className="group-header"></div>
+          <DragDropContext onDragEnd={this.onDragEnd}>
+            <div className="board">
+              {columns.map((data) => (
+                <BoardColumn
+                  {...data}
+                  onCreate={this.onCreate(data.id)}
+                  groupBy={this.state.groupBy}
+                  onOpenCardDetail={this.onOpenCardDetail}
+                />
+              ))}
+            </div>
+          </DragDropContext>
+        </div>
         {!!cardDetail && cardDetailId && (
           <CardDetailModal
             key={`card-detail-${cardDetailId}`}

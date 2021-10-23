@@ -21,7 +21,7 @@ export default function BoardColumn(props: BoardColumnProps) {
   };
   return (
     <div className="board-column">
-      <h3>{title.toUpperCase()}</h3>
+      {/* <h3>{title.toUpperCase()}</h3> */}
       <Droppable droppableId={id}>
         {(provided, snapshot) => (
           <div
