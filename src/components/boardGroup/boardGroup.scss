@@ -1,10 +1,24 @@
 @import "../../index.scss";
 
 .board-group {
-
-
   .group-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    padding-left: 8px;
 
+    .icon {
+      opacity: 0;
+      margin-right: 4px;
+      transition: opacity 0.2s ease-in-out 0s;
+    }
+
+    &:hover {
+      .icon {
+        opacity: 1;
+      }
+    }
   }
 
   .board {
@@ -13,5 +27,16 @@
     flex-direction: row;
     flex-wrap: nowrap;
     overflow-x: auto;
+  }
+
+  .collapsible-board {
+    // padding: 8px 12px;
+    box-sizing: border-box;
+    display: none;
+  }
+
+  .collapsible-board.active {
+    display: block;
+    visibility: visible;
   }
 }

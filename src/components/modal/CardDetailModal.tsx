@@ -12,12 +12,13 @@ import { SortIcon } from "components/icons/Sort";
 import { TreeNodeIcon } from "components/icons/TreeNode";
 import { OpenLockIcon } from "components/icons/OpenLock";
 import React, { Component, createRef } from "react";
-import { BoardColumnType, CardType } from "constants/types";
+import { CardType } from "constants/types";
 import { CloseIcon } from "../icons/Close";
 import "./cardDetailModal.scss";
 import { DropdownMenu } from "components/dropdown/Dropdown";
 import { CollapsibleFields } from "components/collapsible/CollapsibleFields";
 import { CogIcon } from "components/icons/Cog";
+import { columns, epics } from "constants/data";
 
 type SortOrderType = "asc" | "desc";
 type ActivityFilterType = "all" | "comment" | "history";
@@ -32,7 +33,6 @@ interface CardDetailModalProps {
     sourceStatus: string,
     destinationStatus: string
   ) => void;
-  columns: BoardColumnType[];
 }
 interface CardDetailModalState {
   activitySortOrder: SortOrderType;
@@ -53,17 +53,19 @@ export default class CardDetailModal extends Component<
   }
 
   componentDidMount() {
-    document.addEventListener("keyup", this.handleCommentKeyPress);
+    document.addEventListener("keyup", this.handleKeyPress);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.handleCommentKeyPress);
+    document.removeEventListener("keydown", this.handleKeyPress);
   }
 
-  handleCommentKeyPress = (e) => {
+  handleKeyPress = (e) => {
     if (e.keyCode === 77 && this.inputRef.current) {
       // "m" keyCode is 77
       this.inputRef.current.focus();
+    } else if (e.keyCode === 27) {
+      this.onClose();
     }
   };
 
@@ -96,9 +98,10 @@ export default class CardDetailModal extends Component<
     if (!this.props.visible) {
       return null;
     }
-    const { key, cardDetail, columns } = this.props;
-    const { id, epic, title, description, columnId } = cardDetail;
+    const { key, cardDetail } = this.props;
+    const { id, epicId, title, description, columnId } = cardDetail;
     const { activityFilter } = this.state;
+    const epic = epics.find((epic) => epic.id === epicId);
     const columnOptions = columns.map((col) => ({
       id: col.id,
       title: col.title,
@@ -113,8 +116,8 @@ export default class CardDetailModal extends Component<
                   size={18}
                   style={{ marginRight: "4px", color: "#904ee2" }}
                 />
-                <a className="epic-label" title={epic.title}>
-                  <span>{epic.title}</span>
+                <a className="epic-label" title={epic?.title}>
+                  <span>{epic ? epic.title : "Epic"}</span>
                 </a>
               </div>
               <div>
@@ -260,6 +263,7 @@ export default class CardDetailModal extends Component<
             <div className="modal-body-sider">
               <DropdownMenu
                 placeholder="Select a status"
+                key="card-status-dropdown"
                 title={columnOptions.find((col) => col.id === columnId)?.title}
                 items={columnOptions}
                 onClick={this.onStatusChange}

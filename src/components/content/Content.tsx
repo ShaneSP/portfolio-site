@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import debounce from "lodash.debounce";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { BoardColumnType, CardType, GroupBy } from "constants/types";
-import BoardColumn from "../column/BoardColumn";
+import {
+  BoardColumnType,
+  CardType,
+  ColumnGroupType,
+  GroupBy,
+} from "constants/types";
 import CardDetailModal from "../modal/CardDetailModal";
 import { DropdownMenu } from "../dropdown/Dropdown";
 import {
@@ -10,49 +14,16 @@ import {
   labels,
   groupByOptions,
   columns as defaultColumns,
-  defaultCard,
+  createCard,
+  cards as defaultCards,
 } from "../../constants/data";
 import "./content.scss";
-
-/**
- * Helper function for re-ordering drag and drop lists
- * Copied from https://codesandbox.io/s/ql08j35j3q?file=/index.js
- */
-const reorder = (list: CardType[], startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
-/**
- * Moves an item from one list to another list.
- * Copied from https://codesandbox.io/s/ql08j35j3q?file=/index.js
- */
-const move = (
-  source: CardType[],
-  destination: CardType[],
-  droppableSource,
-  droppableDestination
-) => {
-  const sourceClone = Array.from(source);
-  const destClone = Array.from(destination);
-  const [removed] = sourceClone.splice(droppableSource.index, 1);
-
-  destClone.splice(droppableDestination.index, 0, removed);
-
-  const result = {};
-  result[droppableSource.droppableId] = sourceClone;
-  result[droppableDestination.droppableId] = destClone;
-
-  return result;
-};
+import BoardGroup from "components/boardGroup/BoardGroup";
 
 interface ContentProps {}
 interface ContentState {
   groupBy: GroupBy;
-  columns: Map<string, BoardColumnType>;
+  cards: Map<string, CardType>;
   filterByEpic?: string;
   filterByLabel?: string;
   searchTerm?: string;
@@ -65,7 +36,7 @@ class Content extends Component<ContentProps, ContentState> {
     super(props);
     this.state = {
       groupBy: GroupBy.ASSIGNEE,
-      columns: new Map(defaultColumns.map((col) => [col.id, col])),
+      cards: new Map(defaultCards.map((card) => [card.id, card])),
     };
   }
 
@@ -73,25 +44,52 @@ class Content extends Component<ContentProps, ContentState> {
     this.debounceSearch = debounce(this.search, 300);
   }
 
-  getList = (id: string) => this.state.columns.get(id)?.cards;
-
-  onCreate = (columnId: string) => () => {
-    const card = defaultCard();
-    const column = this.state.columns.get(columnId);
-    if (column)
+  componentDidUpdate(prevProps, prevState) {
+    const { filterByEpic, filterByLabel } = this.state;
+    if (filterByEpic && prevState.filterByEpic !== filterByEpic) {
+      // filterByEpic changes and is defined
       this.setState({
-        columns: new Map(
-          this.state.columns.set(columnId, {
-            ...column,
-            cards: [...column.cards, card],
-          })
+        cards: new Map(
+          Array.from(this.state.cards.values())
+            .filter((card) => card.epicId === filterByEpic)
+            .map((card) => [card.id, card])
         ),
+      });
+    } else if (!filterByEpic && !!prevState.filterByEpic) {
+      // filterByEpic changes from defined to undefined
+      this.setState({
+        cards: new Map(defaultCards.map((card) => [card.id, card])),
+      });
+    }
+    if (filterByLabel && prevState.filterByLabel !== filterByLabel) {
+      // filterByLabel changes and is defined
+      this.setState({
+        cards: new Map(
+          Array.from(this.state.cards.values())
+            .filter((card) =>
+              card.labels.find((label) => label.id === filterByLabel)
+            )
+            .map((card) => [card.id, card])
+        ),
+      });
+    } else if (!filterByLabel && !!prevState.filterByLabel) {
+      // filterByLabel changes from defined to undefined
+      this.setState({
+        cards: new Map(defaultCards.map((card) => [card.id, card])),
+      });
+    }
+  }
+
+  // getList = (columnId: string) => [...this.state.cards.values()].filter(card => card.columnId === columnId);
+
+  onCreate = (title: string, columnId: string, index: number) => () => {
+    const card = createCard(title, columnId, index);
+    if (card)
+      this.setState({
+        cards: new Map(this.state.cards.set(card.id, card)),
       });
   };
 
-  /**
-   * Copied from https://codesandbox.io/s/ql08j35j3q?file=/index.js
-   */
   onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
 
@@ -100,76 +98,64 @@ class Content extends Component<ContentProps, ContentState> {
       return;
     }
 
-    if (source.droppableId === destination.droppableId) {
-      const column = this.state.columns.get(source.droppableId);
-      if (column) {
-        const cards = reorder(column.cards, source.index, destination.index);
-
-        this.setState({
-          columns: new Map(
-            this.state.columns.set(source.droppableId, {
-              ...column,
-              cards,
-            })
-          ),
-        });
-      }
-    } else {
-      const sourceColumn = this.state.columns.get(source.droppableId);
-      const destinationColumn = this.state.columns.get(destination.droppableId);
-      if (sourceColumn && destinationColumn) {
-        sourceColumn.cards = sourceColumn.cards.map((card, i) => {
-          if (i === source.index) {
-            return {
-              ...card,
-              columnId: destination.droppableId,
-            };
-          }
-          return card;
-        });
-
-        const result = move(
-          sourceColumn.cards,
-          destinationColumn.cards,
-          source,
-          destination
-        );
-
-        this.setState({
-          columns: new Map(
-            this.state.columns
-              .set(source.droppableId, {
-                ...sourceColumn,
-                cards: result[source.droppableId],
-              })
-              .set(destination.droppableId, {
-                ...destinationColumn,
-                cards: result[destination.droppableId],
-              })
-          ),
-        });
-      }
+    // dropped in the same column and order
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    ) {
+      return;
     }
+
+    const cards = Array.from(this.state.cards.values());
+    const sourceCards = cards
+      .filter((c) => c.columnId === source.droppableId)
+      .sort((a, b) => a.order - b.order);
+    const destinationCards = cards
+      .filter((c) => c.columnId === destination.droppableId)
+      .sort((a, b) => a.order - b.order);
+    const [target] = sourceCards.splice(source.index, 1);
+    const updatedCards = new Map(this.state.cards);
+
+    // dropped in a different column
+    if (source.droppableId !== destination.droppableId) {
+      target.columnId = destination.droppableId;
+      destinationCards.splice(destination.index, 0, target);
+      destinationCards.forEach((card, index) => {
+        updatedCards.set(card.id, {
+          ...card,
+          order: index,
+        });
+      });
+      // dropped in the same column
+    } else {
+      sourceCards.splice(destination.index, 0, target);
+    }
+    sourceCards.forEach((card, index) => {
+      updatedCards.set(card.id, {
+        ...card,
+        order: index,
+      });
+    });
+    this.setState({
+      cards: updatedCards,
+    });
   };
 
   search = (searchTerm?: string) => {
-    let columns = Array.from(this.state.columns.values());
+    let searchedCards = Array.from(this.state.cards.values());
     if (searchTerm && searchTerm.length) {
-      columns = columns.map((col) => {
-        return {
-          ...col,
-          cards: col.cards.filter((card) =>
-            Object.values(card)
-              .join(" ")
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase())
-          ),
-        };
+      searchedCards = searchedCards.filter((card) =>
+        Object.values(card)
+          .join(" ")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      );
+      this.setState({
+        cards: new Map(searchedCards.map((card) => [card.id, card])),
       });
-      this.setState({ columns: new Map(columns.map((col) => [col.id, col])) });
     } else {
       this.setState({
-        columns: new Map(defaultColumns.map((col) => [col.id, col])),
+        cards: new Map(defaultCards.map((card) => [card.id, card])),
       });
     }
   };
@@ -195,12 +181,8 @@ class Content extends Component<ContentProps, ContentState> {
 
   getCardDetail = (id?: string): CardType | undefined => {
     if (!id) return undefined;
-    const { columns } = this.state;
-    const cards = Array.from(columns.values()).reduce(
-      (all: CardType[], current) => all.concat(current.cards),
-      []
-    );
-    return cards.find((card) => card.id === id);
+    const { cards } = this.state;
+    return Array.from(cards.values()).find((card) => card.id === id);
   };
 
   onFilterByEpicClick = (id?: string) => {
@@ -228,65 +210,71 @@ class Content extends Component<ContentProps, ContentState> {
     destinationId: string
   ) => {
     if (sourceId !== destinationId) {
-      const sourceColumn = this.state.columns.get(sourceId);
-      const destinationColumn = this.state.columns.get(destinationId);
-      if (sourceColumn && destinationColumn) {
-        const index = sourceColumn.cards.findIndex(
-          (card) => card.id === cardId
+      const card = this.state.cards.get(cardId);
+      // Set card's order to end of destination column list
+      const order = Array.from(this.state.cards.values()).filter(
+        (c) => c.columnId === destinationId
+      ).length;
+      if (card) {
+        const updatedMap = new Map(
+          this.state.cards.set(cardId, {
+            ...card,
+            columnId: destinationId,
+            order,
+          })
         );
-        sourceColumn.cards = sourceColumn.cards.map((card, i) => {
-          if (i === index) {
-            return {
-              ...card,
-              columnId: destinationId,
-            };
-          }
-          return card;
-        });
-
-        const sourceCards = Array.from(sourceColumn.cards);
-        const destinationCards = Array.from(destinationColumn.cards);
-        const [removed] = sourceCards.splice(index, 1);
-        destinationCards.push(removed);
-
         this.setState({
-          columns: new Map(
-            this.state.columns
-              .set(sourceId, {
-                ...sourceColumn,
-                cards: sourceCards,
-              })
-              .set(destinationId, {
-                ...destinationColumn,
-                cards: destinationCards,
-              })
-          ),
+          cards: updatedMap,
         });
       }
+    }
+  };
+
+  getBoardGroups = () => {
+    const { groupBy, cards } = this.state;
+    // TODO: add an uncategorized boardgroup by default for any cards that don't match the existing groups
+    switch (groupBy) {
+      case GroupBy.ASSIGNEE:
+        return (
+          <BoardGroup
+            key={`board-group-assignee`}
+            title={"Shane Steele-Pardue"}
+            cards={Array.from(cards.values())}
+            groupBy={groupBy}
+            onCreate={this.onCreate}
+            onOpenCardDetail={this.onOpenCardDetail}
+            onDragEnd={this.onDragEnd}
+          />
+        );
+      case GroupBy.EPIC:
+        return epics.map((epic) => (
+          <BoardGroup
+            key={`board-group-${epic.id}`}
+            title={epic.title}
+            cards={Array.from(cards.values()).filter(
+              (card) => card.epicId === epic.id
+            )}
+            groupBy={groupBy}
+            onCreate={this.onCreate}
+            onOpenCardDetail={this.onOpenCardDetail}
+            onDragEnd={this.onDragEnd}
+          />
+        ));
+      default:
+        return <></>;
     }
   };
 
   render() {
     const { searchTerm, cardDetailId, filterByEpic, filterByLabel, groupBy } =
       this.state;
-    let columns = Array.from(this.state.columns.values());
     let activeEpicFilter;
     let activeLabelFilter;
     if (filterByEpic) {
       activeEpicFilter = epics.find((f) => f.id === filterByEpic);
-      columns = columns.map((col) => ({
-        ...col,
-        cards: col.cards.filter((c) => c.epic.id === filterByEpic),
-      }));
     }
     if (filterByLabel) {
       activeLabelFilter = labels.find((f) => f.id === filterByLabel);
-      columns = columns.map((col) => ({
-        ...col,
-        cards: col.cards.filter((c) =>
-          c.labels.find((l) => l.id === filterByLabel)
-        ),
-      }));
     }
     const cardDetail = this.getCardDetail(cardDetailId);
     return (
@@ -333,27 +321,15 @@ class Content extends Component<ContentProps, ContentState> {
             />
           </div>
         </div>
-        <div className="column-group">
+        <div className="column-group-container">
           <div className="column-title-container">
-            {columns.map((data) => (
-              <div className="title-container">
+            {defaultColumns.map((data) => (
+              <div key={`column-title-${data.id}`} className="title-container">
                 <h3>{data.title.toUpperCase()}</h3>
               </div>
             ))}
           </div>
-          <div className="group-header"></div>
-          <DragDropContext onDragEnd={this.onDragEnd}>
-            <div className="board">
-              {columns.map((data) => (
-                <BoardColumn
-                  {...data}
-                  onCreate={this.onCreate(data.id)}
-                  groupBy={this.state.groupBy}
-                  onOpenCardDetail={this.onOpenCardDetail}
-                />
-              ))}
-            </div>
-          </DragDropContext>
+          {this.getBoardGroups()}
         </div>
         {!!cardDetail && cardDetailId && (
           <CardDetailModal
@@ -362,7 +338,6 @@ class Content extends Component<ContentProps, ContentState> {
             onClose={this.onCloseCardDetail}
             cardDetail={cardDetail}
             onCardStatusChange={this.onCardStatusChange}
-            columns={columns}
           >
             <h3>{cardDetail.title}</h3>
             <p>{cardDetail.description}</p>

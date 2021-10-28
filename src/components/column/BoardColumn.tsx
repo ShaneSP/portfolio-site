@@ -1,41 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import { CardType } from "constants/types";
 import "./boardColumn.scss";
 import Card from "../card/Card";
 import { AddIcon } from "../icons/Add";
+import { createCard } from "constants/data";
 
 interface BoardColumnProps {
   id: string;
   cards: CardType[];
   title: string;
-  groupBy: string;
-  onCreate: () => void;
+  onCreate: (title: string, columnId: string, index: number) => void;
   onOpenCardDetail: (id: string) => () => void;
 }
 
 export default function BoardColumn(props: BoardColumnProps) {
-  const { id, cards, title, groupBy, onCreate, onOpenCardDetail } = props;
+  const { id, cards, onOpenCardDetail } = props;
+  const [tempCard, setTempCard] = useState<CardType>();
   const onSave = (index: number) => (card: CardType) => {
+    setTempCard(undefined);
     console.log("New card:", card);
   };
+  const onCreate = () => {
+    setTempCard(createCard("", id, cards.length));
+  };
+  // TODO: create component for temp/new card
   return (
     <div className="board-column">
-      {/* <h3>{title.toUpperCase()}</h3> */}
       <Droppable droppableId={id}>
         {(provided, snapshot) => (
           <div
             ref={provided.innerRef}
             style={{ height: "100%", padding: "grid" }}
           >
-            {cards.map((card, index) => (
+            {cards
+              .sort((a, b) => a.order - b.order)
+              .map((card, index) => (
+                <Card
+                  key={`card-${card.id}`}
+                  card={card}
+                  onSave={onSave(index)}
+                  index={index}
+                  onOpenDetail={onOpenCardDetail(card.id)}
+                />
+              ))}
+            {tempCard && (
               <Card
-                card={card}
-                onSave={onSave(index)}
-                index={index}
-                onOpenDetail={onOpenCardDetail(card.id)}
+                key="temp-card"
+                card={tempCard}
+                onSave={onSave(cards.length)}
+                index={cards.length}
+                onOpenDetail={onOpenCardDetail(tempCard.id)}
               />
-            ))}
+            )}
             <div
               className="create-card"
               onClick={onCreate}

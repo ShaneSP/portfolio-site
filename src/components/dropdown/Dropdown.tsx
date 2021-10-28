@@ -67,7 +67,7 @@ export const DropdownMenu = ({
       <nav className={`menu ${isActive ? "active" : "inactive"}`}>
         <ul className="dropdown" ref={dropdownRef}>
           {items.map((item) => (
-            <li>
+            <li key={`dropdown-item-${item.id}`}>
               <a onClick={() => onItemClick(item.id)}>{item.title}</a>
             </li>
           ))}
