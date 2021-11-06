@@ -297,7 +297,6 @@ class Content extends Component<ContentProps, ContentState> {
       default:
         return <></>;
     }
-    // if (uncategorized.length > 0) {
     groups.push(
       <BoardGroup
         key={`board-group-uncategorized`}
@@ -308,7 +307,6 @@ class Content extends Component<ContentProps, ContentState> {
         onOpenCardDetail={this.onOpenCardDetail}
       />
     );
-    // }
     return groups;
   };
 
