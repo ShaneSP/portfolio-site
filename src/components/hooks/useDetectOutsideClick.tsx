@@ -1,14 +1,11 @@
 import { useCallback, useEffect, useState, useRef } from "react";
-interface Containable extends HTMLElement {
-  contains: (target: EventTarget | null) => boolean;
-}
 /**
  * Hook for handling closing when clicking outside of an element
  * @param {React.node} ref
  * @param {boolean} initialState
  */
-export const useDetectOutsideClick = (initialState) => {
-  const ref = useRef<Containable>(null);
+export const useDetectOutsideClick = (initialState: boolean = false) => {
+  const ref = useRef<any>(null);
   const [isActive, setIsActive] = useState(initialState);
 
   const onClick = useCallback(
@@ -32,5 +29,5 @@ export const useDetectOutsideClick = (initialState) => {
     };
   }, [isActive, ref.current]);
 
-  return [isActive, setIsActive, ref];
+  return { isActive, setIsActive, ref };
 };

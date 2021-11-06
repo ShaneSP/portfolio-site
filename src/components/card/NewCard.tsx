@@ -14,7 +14,7 @@ export default function NewCard(props: NewCardProps) {
   const { card, onSave } = props;
   const { labels, epicId } = card;
   const [title, setTitle] = useState<string>();
-  const [isActive, setIsActive, ref] = useDetectOutsideClick(true);
+  const { isActive, setIsActive, ref } = useDetectOutsideClick(true);
   const textAreaRef = createRef<HTMLTextAreaElement>();
   const epic = epics.find((epic) => epic.id === epicId);
   const onKeyDown = (e) => {

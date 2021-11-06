@@ -25,9 +25,10 @@ export const DropdownMenu = ({
   type = "default",
   className,
 }: DropdownMenuProps) => {
-  const [isActive, setIsActive, dropdownRef] = useDetectOutsideClick(false);
+  const { isActive, setIsActive, ref: dropdownRef } = useDetectOutsideClick();
   const [isSelected, setIsSelected] = useState(false);
   const onDropdownClick = () => {
+    console.log(isActive);
     setIsActive(!isActive);
   };
   const onItemClick = (id: string) => {
@@ -43,7 +44,7 @@ export const DropdownMenu = ({
   };
 
   return (
-    <div style={style} className={className}>
+    <div style={style} className={className} ref={dropdownRef}>
       <button
         onClick={onDropdownClick}
         className={`menu-trigger ${type} ${isActive ? "active" : "inactive"}`}
@@ -65,7 +66,7 @@ export const DropdownMenu = ({
         )}
       </button>
       <nav className={`menu ${isActive ? "active" : "inactive"}`}>
-        <ul className="dropdown" ref={dropdownRef}>
+        <ul className="dropdown">
           {items.map((item) => (
             <li key={`dropdown-item-${item.id}`}>
               <a onClick={() => onItemClick(item.id)}>{item.title}</a>
