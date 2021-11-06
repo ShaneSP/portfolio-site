@@ -9,6 +9,7 @@ import NewCard from "components/card/NewCard";
 
 interface BoardColumnProps {
   id: string;
+  droppableId: string;
   cards: CardType[];
   title: string;
   onCreate: (title: string, columnId: string, index: number) => void;
@@ -16,7 +17,7 @@ interface BoardColumnProps {
 }
 
 export default function BoardColumn(props: BoardColumnProps) {
-  const { id, cards, onOpenCardDetail } = props;
+  const { id, droppableId, cards, onOpenCardDetail } = props;
   const [tempCard, setTempCard] = useState<CardType>();
   const onSave = (title?: string) => {
     setTempCard(undefined);
@@ -29,7 +30,7 @@ export default function BoardColumn(props: BoardColumnProps) {
   };
   return (
     <div className="board-column">
-      <Droppable droppableId={id}>
+      <Droppable droppableId={droppableId}>
         {(provided, snapshot) => (
           <div
             ref={provided.innerRef}

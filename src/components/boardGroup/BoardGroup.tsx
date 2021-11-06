@@ -1,9 +1,4 @@
 import React, { useState } from "react";
-import {
-  DragDropContext,
-  DropResult,
-  ResponderProvided,
-} from "react-beautiful-dnd";
 import { columns } from "constants/data";
 import BoardColumn from "components/column/BoardColumn";
 import "./boardGroup.scss";
@@ -13,16 +8,14 @@ import { CardType } from "constants/types";
 interface BoardGroupProps {
   title: string;
   cards: CardType[];
-  groupBy: string;
+  groupById: string;
   onCreate: (title: string, columnId: string, index: number) => void;
   onOpenCardDetail: (id: string) => () => void;
-  onDragEnd: (result: DropResult, provided: ResponderProvided) => void;
 }
 
 export default function BoardGroup(props: BoardGroupProps) {
   const [isActive, setIsActive] = useState(true);
-  const { title, cards, groupBy, onCreate, onOpenCardDetail, onDragEnd } =
-    props;
+  const { title, cards, groupById, onCreate, onOpenCardDetail } = props;
   const onClick = () => {
     setIsActive(!isActive);
   };
@@ -37,19 +30,18 @@ export default function BoardGroup(props: BoardGroupProps) {
         <h3>{title}</h3>
       </div>
       <div className={`collapsible-board ${isActive ? "active" : ""}`}>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <div className="board">
-            {columns.map((data) => (
-              <BoardColumn
-                {...data}
-                cards={cards.filter((card) => card.columnId === data.id)}
-                key={`board-column-${groupBy}-${data.id}`}
-                onCreate={onCreate}
-                onOpenCardDetail={onOpenCardDetail}
-              />
-            ))}
-          </div>
-        </DragDropContext>
+        <div className="board">
+          {columns.map((data) => (
+            <BoardColumn
+              {...data}
+              droppableId={`${data.id}$${groupById}`}
+              cards={cards.filter((card) => card.columnId === data.id)}
+              key={`board-column-${groupById}-${data.id}`}
+              onCreate={onCreate}
+              onOpenCardDetail={onOpenCardDetail}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

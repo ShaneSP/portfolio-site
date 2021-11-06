@@ -104,7 +104,6 @@ class Content extends Component<ContentProps, ContentState> {
 
   onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
-    // TODO dragging needs to pass on epic and/or assignee data as well
     // dropped outside the list
     if (!destination) {
       return;
@@ -118,19 +117,36 @@ class Content extends Component<ContentProps, ContentState> {
       return;
     }
 
+    // droppableId is formatted with the following pattern:
+    // "columnId$groupById"
+    const sourceColumnId = source.droppableId.split("$")[0];
+    const sourceGroupById = source.droppableId.split("$")[1];
+    const destinationColumnId = destination.droppableId.split("$")[0];
+    let destinationGroupById: string | undefined =
+      destination.droppableId.split("$")[1];
+    if (destinationGroupById === "undefined") {
+      destinationGroupById = undefined;
+    }
+
     const cards = Array.from(this.state.cards.values());
     const sourceCards = cards
-      .filter((c) => c.columnId === source.droppableId)
+      .filter((c) => c.columnId === sourceColumnId)
       .sort((a, b) => a.order - b.order);
     const destinationCards = cards
-      .filter((c) => c.columnId === destination.droppableId)
+      .filter((c) => c.columnId === destinationColumnId)
       .sort((a, b) => a.order - b.order);
     const [target] = sourceCards.splice(source.index, 1);
     const updatedCards = new Map(this.state.cards);
 
+    if (this.state.groupBy === GroupBy.ASSIGNEE) {
+      target.assigneeId = destinationGroupById;
+    } else if (this.state.groupBy === GroupBy.EPIC) {
+      target.epicId = destinationGroupById;
+    }
+
     // dropped in a different column
-    if (source.droppableId !== destination.droppableId) {
-      target.columnId = destination.droppableId;
+    if (sourceColumnId !== destinationColumnId) {
+      target.columnId = destinationColumnId;
       destinationCards.splice(destination.index, 0, target);
       destinationCards.forEach((card, index) => {
         updatedCards.set(card.id, {
@@ -247,6 +263,8 @@ class Content extends Component<ContentProps, ContentState> {
     const cards = Array.from(this.state.cards.values());
     let uncategorized: CardType[] = [];
     const groups: JSX.Element[] = [];
+    // There's only one assignee so we're just going to give all
+    // non-undefined cards to them.
     switch (groupBy) {
       case GroupBy.ASSIGNEE:
         uncategorized = cards.filter((c) => c.assigneeId === undefined);
@@ -255,10 +273,9 @@ class Content extends Component<ContentProps, ContentState> {
             key={`board-group-assignee`}
             title={"Shane Steele-Pardue"}
             cards={cards.filter((c) => c.assigneeId !== undefined)}
-            groupBy={groupBy}
+            groupById={assignees[0].id}
             onCreate={this.onCreateByAssignee(assignees[0].id)}
             onOpenCardDetail={this.onOpenCardDetail}
-            onDragEnd={this.onDragEnd}
           />
         );
         break;
@@ -270,10 +287,9 @@ class Content extends Component<ContentProps, ContentState> {
               key={`board-group-${epic.id}`}
               title={epic.title}
               cards={cards.filter((card) => card.epicId === epic.id)}
-              groupBy={groupBy}
+              groupById={epic.id}
               onCreate={this.onCreateByEpic(epic.id)}
               onOpenCardDetail={this.onOpenCardDetail}
-              onDragEnd={this.onDragEnd}
             />
           );
         });
@@ -287,10 +303,9 @@ class Content extends Component<ContentProps, ContentState> {
         key={`board-group-uncategorized`}
         title={"Uncategorized"}
         cards={uncategorized}
-        groupBy={groupBy}
+        groupById={"undefined"}
         onCreate={this.onCreateByAssignee()}
         onOpenCardDetail={this.onOpenCardDetail}
-        onDragEnd={this.onDragEnd}
       />
     );
     // }
@@ -361,7 +376,9 @@ class Content extends Component<ContentProps, ContentState> {
               </div>
             ))}
           </div>
-          {this.getBoardGroups()}
+          <DragDropContext onDragEnd={this.onDragEnd}>
+            {this.getBoardGroups()}
+          </DragDropContext>
         </div>
         {!!cardDetail && cardDetailId && (
           <CardDetailModal
