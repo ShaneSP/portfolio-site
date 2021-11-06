@@ -5,6 +5,7 @@ import "./boardColumn.scss";
 import Card from "../card/Card";
 import { AddIcon } from "../icons/Add";
 import { createCard } from "constants/data";
+import NewCard from "components/card/NewCard";
 
 interface BoardColumnProps {
   id: string;
@@ -17,14 +18,15 @@ interface BoardColumnProps {
 export default function BoardColumn(props: BoardColumnProps) {
   const { id, cards, onOpenCardDetail } = props;
   const [tempCard, setTempCard] = useState<CardType>();
-  const onSave = (index: number) => (card: CardType) => {
+  const onSave = (title?: string) => {
     setTempCard(undefined);
-    console.log("New card:", card);
+    if (title) {
+      props.onCreate(title, id, cards.length);
+    }
   };
   const onCreate = () => {
     setTempCard(createCard("", id, cards.length));
   };
-  // TODO: create component for temp/new card
   return (
     <div className="board-column">
       <Droppable droppableId={id}>
@@ -39,18 +41,16 @@ export default function BoardColumn(props: BoardColumnProps) {
                 <Card
                   key={`card-${card.id}`}
                   card={card}
-                  onSave={onSave(index)}
                   index={index}
                   onOpenDetail={onOpenCardDetail(card.id)}
                 />
               ))}
             {tempCard && (
-              <Card
+              <NewCard
                 key="temp-card"
                 card={tempCard}
-                onSave={onSave(cards.length)}
+                onSave={onSave}
                 index={cards.length}
-                onOpenDetail={onOpenCardDetail(tempCard.id)}
               />
             )}
             <div

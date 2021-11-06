@@ -38,6 +38,7 @@ interface CardDetailModalState {
   activitySortOrder: SortOrderType;
   activityFilter: ActivityFilterType;
 }
+// TODO: add commenting
 
 export default class CardDetailModal extends Component<
   CardDetailModalProps,
@@ -65,6 +66,7 @@ export default class CardDetailModal extends Component<
       // "m" keyCode is 77
       this.inputRef.current.focus();
     } else if (e.keyCode === 27) {
+      // "esc" keyCode is 27
       this.onClose();
     }
   };

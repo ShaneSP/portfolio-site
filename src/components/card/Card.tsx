@@ -6,13 +6,12 @@ import { epics } from "constants/data";
 
 interface CardProps {
   card: CardType;
-  onSave: (card: CardType) => void;
   index: number;
   onOpenDetail: () => void;
 }
 
 export default function Card(props: CardProps) {
-  const { card, onSave, index, onOpenDetail } = props;
+  const { card, index, onOpenDetail } = props;
   const { title, description, labels, epicId } = card;
   const epic = epics.find((epic) => epic.id === epicId);
   const onClick = () => {

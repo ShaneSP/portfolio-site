@@ -34,7 +34,9 @@ const groupByOptions = [
 const createCard = (
   title: string,
   columnId: string = columnIds[1],
-  order: number = 0
+  order: number = 0,
+  epicId?: string,
+  assigneeId?: string
 ): CardType => {
   return {
     id: uuid(),
@@ -42,8 +44,9 @@ const createCard = (
     description: "",
     labels: [],
     columnId,
-    assigneeId: assignees[0].id,
+    assigneeId,
     order,
+    epicId,
   };
 };
 const columnIds = [uuid(), uuid(), uuid(), uuid()];

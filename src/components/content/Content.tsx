@@ -16,6 +16,7 @@ import {
   columns as defaultColumns,
   createCard,
   cards as defaultCards,
+  assignees,
 } from "../../constants/data";
 import "./content.scss";
 import BoardGroup from "components/boardGroup/BoardGroup";
@@ -82,17 +83,28 @@ class Content extends Component<ContentProps, ContentState> {
 
   // getList = (columnId: string) => [...this.state.cards.values()].filter(card => card.columnId === columnId);
 
-  onCreate = (title: string, columnId: string, index: number) => () => {
-    const card = createCard(title, columnId, index);
-    if (card)
-      this.setState({
-        cards: new Map(this.state.cards.set(card.id, card)),
-      });
-  };
+  onCreateByEpic =
+    (epicId?: string) => (title: string, columnId: string, index: number) => {
+      const card = createCard(title, columnId, index, epicId);
+      if (card)
+        this.setState({
+          cards: new Map(this.state.cards.set(card.id, card)),
+        });
+    };
+
+  onCreateByAssignee =
+    (assigneeId?: string) =>
+    (title: string, columnId: string, index: number) => {
+      const card = createCard(title, columnId, index, undefined, assigneeId);
+      if (card)
+        this.setState({
+          cards: new Map(this.state.cards.set(card.id, card)),
+        });
+    };
 
   onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
-
+    // TODO dragging needs to pass on epic and/or assignee data as well
     // dropped outside the list
     if (!destination) {
       return;
@@ -231,38 +243,58 @@ class Content extends Component<ContentProps, ContentState> {
   };
 
   getBoardGroups = () => {
-    const { groupBy, cards } = this.state;
-    // TODO: add an uncategorized boardgroup by default for any cards that don't match the existing groups
+    const { groupBy } = this.state;
+    const cards = Array.from(this.state.cards.values());
+    let uncategorized: CardType[] = [];
+    const groups: JSX.Element[] = [];
     switch (groupBy) {
       case GroupBy.ASSIGNEE:
-        return (
+        uncategorized = cards.filter((c) => c.assigneeId === undefined);
+        groups.push(
           <BoardGroup
             key={`board-group-assignee`}
             title={"Shane Steele-Pardue"}
-            cards={Array.from(cards.values())}
+            cards={cards.filter((c) => c.assigneeId !== undefined)}
             groupBy={groupBy}
-            onCreate={this.onCreate}
+            onCreate={this.onCreateByAssignee(assignees[0].id)}
             onOpenCardDetail={this.onOpenCardDetail}
             onDragEnd={this.onDragEnd}
           />
         );
+        break;
       case GroupBy.EPIC:
-        return epics.map((epic) => (
-          <BoardGroup
-            key={`board-group-${epic.id}`}
-            title={epic.title}
-            cards={Array.from(cards.values()).filter(
-              (card) => card.epicId === epic.id
-            )}
-            groupBy={groupBy}
-            onCreate={this.onCreate}
-            onOpenCardDetail={this.onOpenCardDetail}
-            onDragEnd={this.onDragEnd}
-          />
-        ));
+        uncategorized = cards.filter((c) => c.epicId === undefined);
+        epics.map((epic) => {
+          groups.push(
+            <BoardGroup
+              key={`board-group-${epic.id}`}
+              title={epic.title}
+              cards={cards.filter((card) => card.epicId === epic.id)}
+              groupBy={groupBy}
+              onCreate={this.onCreateByEpic(epic.id)}
+              onOpenCardDetail={this.onOpenCardDetail}
+              onDragEnd={this.onDragEnd}
+            />
+          );
+        });
+        break;
       default:
         return <></>;
     }
+    // if (uncategorized.length > 0) {
+    groups.push(
+      <BoardGroup
+        key={`board-group-uncategorized`}
+        title={"Uncategorized"}
+        cards={uncategorized}
+        groupBy={groupBy}
+        onCreate={this.onCreateByAssignee()}
+        onOpenCardDetail={this.onOpenCardDetail}
+        onDragEnd={this.onDragEnd}
+      />
+    );
+    // }
+    return groups;
   };
 
   render() {

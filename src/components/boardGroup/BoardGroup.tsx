@@ -26,7 +26,6 @@ export default function BoardGroup(props: BoardGroupProps) {
   const onClick = () => {
     setIsActive(!isActive);
   };
-  // TODO: set minimum height for boardGroup columns
   return (
     <div className="board-group">
       <div className="group-header" onClick={onClick}>
