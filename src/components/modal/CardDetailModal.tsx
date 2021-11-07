@@ -18,7 +18,8 @@ import "./cardDetailModal.scss";
 import { DropdownMenu } from "components/dropdown/Dropdown";
 import { CollapsibleFields } from "components/collapsible/CollapsibleFields";
 import { CogIcon } from "components/icons/Cog";
-import { columns, epics } from "constants/data";
+import { cards, columns, epics } from "constants/data";
+import { Menu, MenuItem } from "components/menu/Menu";
 
 type SortOrderType = "asc" | "desc";
 type ActivityFilterType = "all" | "comment" | "history";
@@ -33,12 +34,12 @@ interface CardDetailModalProps {
     sourceStatus: string,
     destinationStatus: string
   ) => void;
+  onDelete: (id: string) => void;
 }
 interface CardDetailModalState {
   activitySortOrder: SortOrderType;
   activityFilter: ActivityFilterType;
 }
-// TODO: add commenting
 
 export default class CardDetailModal extends Component<
   CardDetailModalProps,
@@ -96,6 +97,11 @@ export default class CardDetailModal extends Component<
     }
   };
 
+  onDelete = () => {
+    this.props.onDelete(this.props.cardDetail.id);
+    this.onClose();
+  };
+
   render() {
     if (!this.props.visible) {
       return null;
@@ -148,9 +154,21 @@ export default class CardDetailModal extends Component<
               <button className="icon-button">
                 <ShareIcon size={24} />
               </button>
-              <button className="icon-button">
-                <EllipsisIcon size={24} />
-              </button>
+              <Menu
+                title={<EllipsisIcon size={24} />}
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  padding: "2px",
+                  marginLeft: "16px",
+                }}
+              >
+                <MenuItem
+                  key={`menu-item-delete`}
+                  title="Delete"
+                  onClick={this.onDelete}
+                />
+              </Menu>
               <button className="icon-button">
                 <CloseIcon size={24} onClick={this.onClose} />
               </button>

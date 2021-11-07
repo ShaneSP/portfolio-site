@@ -6,7 +6,7 @@ import { useDetectOutsideClick } from "../hooks/useDetectOutsideClick";
 
 interface DropdownMenuProps {
   placeholder: string;
-  title?: string;
+  title?: string | JSX.Element;
   onClick: (id?: any) => void;
   items: { id: string; title: string }[];
   showClear?: boolean;

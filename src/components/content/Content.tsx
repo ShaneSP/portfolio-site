@@ -310,6 +310,14 @@ class Content extends Component<ContentProps, ContentState> {
     return groups;
   };
 
+  onDelete = (id: string) => {
+    const updatedCards = new Map(this.state.cards);
+    updatedCards.delete(id);
+    this.setState({
+      cards: updatedCards,
+    });
+  };
+
   render() {
     const { searchTerm, cardDetailId, filterByEpic, filterByLabel, groupBy } =
       this.state;
@@ -385,6 +393,7 @@ class Content extends Component<ContentProps, ContentState> {
             onClose={this.onCloseCardDetail}
             cardDetail={cardDetail}
             onCardStatusChange={this.onCardStatusChange}
+            onDelete={this.onDelete}
           >
             <h3>{cardDetail.title}</h3>
             <p>{cardDetail.description}</p>
