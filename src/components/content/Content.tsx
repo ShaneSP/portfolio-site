@@ -20,6 +20,11 @@ import {
 } from "../../constants/data";
 import "./content.scss";
 import BoardGroup from "components/boardGroup/BoardGroup";
+import { LightningIcon } from "components/icons/Lightning";
+import Button from "components/button/Button";
+import { Menu } from "components/menu/Menu";
+import { EllipsisIcon } from "components/icons/Ellipsis";
+import { StarIcon } from "components/icons/Star";
 
 interface ContentProps {}
 interface ContentState {
@@ -332,7 +337,28 @@ class Content extends Component<ContentProps, ContentState> {
     const cardDetail = this.getCardDetail(cardDetailId);
     return (
       <div className="content">
-        <h1>Resume Board</h1>
+        <div className="board-title-container">
+          <h1>Resume Board</h1>
+          <div className="action-container">
+            <Button
+              icon={<LightningIcon size={24} />}
+              title=""
+              style={{ width: "32px", height: "32px", marginRight: "2px" }}
+              className="icon-button"
+            />
+            <Button
+              icon={<StarIcon size={20} />}
+              title=""
+              style={{ width: "32px", height: "32px", marginRight: "8px" }}
+              className="icon-button"
+            />
+            <Button
+              icon={<EllipsisIcon size={24} />}
+              title=""
+              style={{ width: "32px", height: "32px" }}
+            />
+          </div>
+        </div>
         <div className="toolbar">
           <div
             style={{ display: "flex", flex: "1 1 0%", flexDirection: "row" }}

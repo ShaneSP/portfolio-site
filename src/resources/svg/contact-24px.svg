@@ -1,0 +1,27 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 20 15.5"
+>
+  <path
+    d="M1.38,1H18.63a.38.38,0,0,1,.38.38V14.13a.38.38,0,0,1-.37.38H1.38A.37.37,0,0,1,1,14.13V1.38A.38.38,0,0,1,1.38,1Z"
+    fill="none"
+    stroke="currentColor"
+    stroke-miterlimit="10"
+    stroke-width="2"
+  />
+  <path
+    d="M11.21,12.79A1.88,1.88,0,0,0,9.67,11,1.87,1.87,0,1,0,6.33,9.79,1.83,1.83,0,0,0,6.75,11a1.87,1.87,0,0,0-1.54,1.84v2.63h6Zm-3-4.12a1.13,1.13,0,0,1,0,2.25,1.13,1.13,0,1,1,0-2.25Zm2.25,6H6V12.79a1.12,1.12,0,0,1,1.12-1.12H9.33a1.13,1.13,0,0,1,1.13,1.12Z"
+    stroke="currentColor"
+    transform="translate(-1.96 -4.29)"
+  />
+  <rect fill="currentColor" x="10.13" y="10.13" width="1.25" height="1.25" rx="0.62" />
+  <rect fill="currentColor" x="11.63" y="10.13" width="1.25" height="1.25" rx="0.62" />
+  <rect fill="currentColor" x="13.13" y="10.13" width="1.25" height="1.25" rx="0.62" />
+  <rect fill="currentColor" x="15.75" y="10.13" width="1.25" height="1.25" rx="0.62" />
+  <rect fill="currentColor" x="10.04" y="8.25" width="3" height="1.25" rx="0.62" />
+  <rect fill="currentColor" x="15.44" y="8.25" width="1.5" height="1.25" rx="0.62" />
+  <rect fill="currentColor" x="12.81" y="6.38" width="4.13" height="1.25" rx="0.62" />
+  <rect fill="currentColor" x="10" y="6.37" width="1.12" height="1.25" rx="0.56" />
+  <rect fill="currentColor" x="10" y="4.5" width="2.63" height="1.25" rx="0.62" />
+  <rect fill="currentColor" x="14.31" y="4.5" width="2.63" height="1.25" rx="0.62" />
+</svg>

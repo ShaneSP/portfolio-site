@@ -1,5 +1,4 @@
-import { AddIcon } from "components/icons/Add";
-import React, { useState } from "react";
+import React from "react";
 import "./button.scss";
 
 interface ButtonProps
@@ -7,9 +6,10 @@ interface ButtonProps
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {
-  title: string;
+  title?: string;
   icon?: JSX.Element;
   style?: any;
+  className?: string;
 }
 
 export const Button = (props: ButtonProps) => {
@@ -17,7 +17,7 @@ export const Button = (props: ButtonProps) => {
   return (
     <button style={props.style} {...restProps}>
       {props.icon && <span className="icon">{props.icon}</span>}
-      <span className="title">{props.title}</span>
+      {props.title && <span className="title">{props.title}</span>}
     </button>
   );
 };

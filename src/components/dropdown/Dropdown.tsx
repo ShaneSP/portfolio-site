@@ -5,10 +5,10 @@ import { CloseCircleIcon } from "../icons/CloseCircle";
 import { useDetectOutsideClick } from "../hooks/useDetectOutsideClick";
 
 interface DropdownMenuProps {
-  placeholder: string;
+  placeholder?: string;
   title?: string | JSX.Element;
-  onClick: (id?: any) => void;
-  items: { id: string; title: string }[];
+  onClick?: (id?: any) => void;
+  items?: { id: string; title: string }[];
   showClear?: boolean;
   style?: any;
   type?: "primary" | "default";
@@ -34,13 +34,17 @@ export const DropdownMenu = ({
   const onItemClick = (id: string) => {
     setIsActive(!isActive);
     setIsSelected(true);
-    onClick(id);
+    if (onClick) {
+      onClick(id);
+    }
   };
   const onClearClick = (e) => {
     e.stopPropagation();
     setIsSelected(false);
     setIsActive(false);
-    onClick(undefined);
+    if (onClick) {
+      onClick(undefined);
+    }
   };
 
   return (
@@ -49,7 +53,7 @@ export const DropdownMenu = ({
         onClick={onDropdownClick}
         className={`menu-trigger ${type} ${isActive ? "active" : "inactive"}`}
       >
-        <span>{title || placeholder}</span>
+        <span>{title || placeholder || "Menu"}</span>
         {showClear && isSelected ? (
           <CloseCircleIcon
             size={12}
@@ -67,11 +71,12 @@ export const DropdownMenu = ({
       </button>
       <nav className={`menu ${isActive ? "active" : "inactive"}`}>
         <ul className="dropdown">
-          {items.map((item) => (
-            <li key={`dropdown-item-${item.id}`}>
-              <a onClick={() => onItemClick(item.id)}>{item.title}</a>
-            </li>
-          ))}
+          {items &&
+            items.map((item) => (
+              <li key={`dropdown-item-${item.id}`}>
+                <a onClick={() => onItemClick(item.id)}>{item.title}</a>
+              </li>
+            ))}
         </ul>
       </nav>
     </div>
