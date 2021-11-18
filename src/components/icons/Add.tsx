@@ -1,10 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as Add } from "../../resources/svg/add-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as Add } from "../../resources/svg/add.svg";
 
-interface AddIconProps extends SVGProps<any> {
-  size: number;
-}
-
-export const AddIcon = (props: AddIconProps) => {
+export const AddIcon = (props: IconProps) => {
   return <Add width={props.size} height={props.size} {...props} />;
 };

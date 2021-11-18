@@ -1,10 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as Lightning } from "../../resources/svg/lightning-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as Lightning } from "../../resources/svg/lightning.svg";
 
-interface LightningIconProps extends SVGProps<any> {
-  size: number;
-}
-
-export const LightningIcon = (props: LightningIconProps) => {
+export const LightningIcon = (props: IconProps) => {
   return <Lightning width={props.size} height={props.size} {...props} />;
 };

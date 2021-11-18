@@ -1,10 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as Board } from "../../resources/svg/board-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as Board } from "../../resources/svg/board.svg";
 
-interface BoardIconProps extends SVGProps<any> {
-  size: number;
-}
-
-export const BoardIcon = (props: BoardIconProps) => {
+export const BoardIcon = (props: IconProps) => {
   return <Board width={props.size} height={props.size} {...props} />;
 };

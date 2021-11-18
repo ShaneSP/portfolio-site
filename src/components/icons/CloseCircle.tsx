@@ -1,11 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as CloseCircle } from "../../resources/svg/close_black_circle_24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as CloseCircle } from "../../resources/svg/close-black-circle.svg";
 
-interface CloseCircleIconProps extends SVGProps<any> {
-  size: number;
-  style?: any;
-}
-
-export const CloseCircleIcon = (props: CloseCircleIconProps) => {
+export const CloseCircleIcon = (props: IconProps) => {
   return <CloseCircle width={props.size} height={props.size} {...props} />;
 };

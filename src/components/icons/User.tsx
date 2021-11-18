@@ -1,10 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as User } from "../../resources/svg/user-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as User } from "../../resources/svg/user.svg";
 
-interface UserIconProps extends SVGProps<any> {
-  size: number;
-}
-
-export const UserIcon = (props: UserIconProps) => {
+export const UserIcon = (props: IconProps) => {
   return <User width={props.size} height={props.size} {...props} />;
 };

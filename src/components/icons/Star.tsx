@@ -1,10 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as Star } from "../../resources/svg/star-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as Star } from "../../resources/svg/star.svg";
 
-interface StarIconProps extends SVGProps<any> {
-  size: number;
-}
-
-export const StarIcon = (props: StarIconProps) => {
+export const StarIcon = (props: IconProps) => {
   return <Star width={props.size} height={props.size} {...props} />;
 };

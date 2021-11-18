@@ -1,10 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as Contact } from "../../resources/svg/contact-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as Contact } from "../../resources/svg/contact.svg";
 
-interface ContactIconProps extends SVGProps<any> {
-  size: number;
-}
-
-export const ContactIcon = (props: ContactIconProps) => {
+export const ContactIcon = (props: IconProps) => {
   return <Contact width={props.size} height={props.size} {...props} />;
 };

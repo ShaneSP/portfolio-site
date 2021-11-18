@@ -1,12 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as ChevronDown } from "../../resources/svg/chevron-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as ChevronDown } from "../../resources/svg/chevron.svg";
 
-interface ChevronDownIconProps extends SVGProps<any> {
-  size: number;
-  style?: any;
-  transform?: string;
-}
-
-export const ChevronDownIcon = (props: ChevronDownIconProps) => {
+export const ChevronDownIcon = (props: IconProps) => {
   return <ChevronDown width={props.size} height={props.size} {...props} />;
 };

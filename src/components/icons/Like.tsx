@@ -1,12 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as Like } from "../../resources/svg/like-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as Like } from "../../resources/svg/like.svg";
 
-interface LikeIconProps extends SVGProps<any> {
-  size: number;
-  style?: any;
-  transform?: string;
-}
-
-export const LikeIcon = (props: LikeIconProps) => {
+export const LikeIcon = (props: IconProps) => {
   return <Like width={props.size} height={props.size} {...props} />;
 };

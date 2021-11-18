@@ -1,10 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as Close } from "../../resources/svg/close_black_24dp.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as Close } from "../../resources/svg/close-black.svg";
 
-interface CloseIconProps extends SVGProps<any> {
-  size: number;
-}
-
-export const CloseIcon = (props: CloseIconProps) => {
+export const CloseIcon = (props: IconProps) => {
   return <Close width={props.size} height={props.size} {...props} />;
 };

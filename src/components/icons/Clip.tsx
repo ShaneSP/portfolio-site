@@ -1,12 +1,8 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as Clip } from "../../resources/svg/clip-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as Clip } from "../../resources/svg/clip.svg";
 
-interface ClipIconProps extends SVGProps<any> {
-  size: number;
-  style?: any;
-}
-
-export const ClipIcon = (props: ClipIconProps) => {
+export const ClipIcon = (props: IconProps) => {
   return (
     <Clip
       transform="rotate(180)"

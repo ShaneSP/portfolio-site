@@ -1,12 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as Share } from "../../resources/svg/share-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as Share } from "../../resources/svg/share.svg";
 
-interface ShareIconProps extends SVGProps<any> {
-  size: number;
-  style?: any;
-  transform?: string;
-}
-
-export const ShareIcon = (props: ShareIconProps) => {
+export const ShareIcon = (props: IconProps) => {
   return <Share width={props.size} height={props.size} {...props} />;
 };

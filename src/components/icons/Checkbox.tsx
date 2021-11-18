@@ -1,12 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as Checkbox } from "../../resources/svg/checkbox-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as Checkbox } from "../../resources/svg/checkbox.svg";
 
-interface CheckboxIconProps extends SVGProps<any> {
-  size: number;
-  style?: any;
-  transform?: string;
-}
-
-export const CheckboxIcon = (props: CheckboxIconProps) => {
+export const CheckboxIcon = (props: IconProps) => {
   return <Checkbox width={props.size} height={props.size} {...props} />;
 };

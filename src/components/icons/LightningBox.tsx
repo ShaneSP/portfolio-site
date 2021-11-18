@@ -1,12 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as LightningBox } from "../../resources/svg/lightning-box-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as LightningBox } from "../../resources/svg/lightning-box.svg";
 
-interface LightningBoxIconProps extends SVGProps<any> {
-  size: number;
-  style?: any;
-  transform?: string;
-}
-
-export const LightningBoxIcon = (props: LightningBoxIconProps) => {
+export const LightningBoxIcon = (props: IconProps) => {
   return <LightningBox width={props.size} height={props.size} {...props} />;
 };

@@ -1,3 +1,5 @@
+import { SVGProps } from "react";
+
 export interface BoardColumnType {
   id: string;
   title: StatusType;
@@ -41,4 +43,8 @@ export enum StatusType {
   INPROGRESS = "In Progress",
   DONE = "Done",
   MISCELLANEOUS = "Miscellaneous",
+}
+
+export interface IconProps extends SVGProps<any> {
+  size: number;
 }

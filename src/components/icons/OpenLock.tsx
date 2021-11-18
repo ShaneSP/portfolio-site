@@ -1,12 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as OpenLock } from "../../resources/svg/open-lock-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as OpenLock } from "../../resources/svg/open-lock.svg";
 
-interface OpenLockIconProps extends SVGProps<any> {
-  size: number;
-  style?: any;
-  transform?: string;
-}
-
-export const OpenLockIcon = (props: OpenLockIconProps) => {
+export const OpenLockIcon = (props: IconProps) => {
   return <OpenLock width={props.size} height={props.size} {...props} />;
 };

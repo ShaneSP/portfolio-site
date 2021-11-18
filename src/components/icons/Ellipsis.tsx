@@ -1,12 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as Ellipsis } from "../../resources/svg/ellipsis-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as Ellipsis } from "../../resources/svg/ellipsis.svg";
 
-interface EllipsisIconProps extends SVGProps<any> {
-  size: number;
-  style?: any;
-  transform?: string;
-}
-
-export const EllipsisIcon = (props: EllipsisIconProps) => {
+export const EllipsisIcon = (props: IconProps) => {
   return <Ellipsis width={props.size} height={props.size} {...props} />;
 };

@@ -1,12 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as Eye } from "../../resources/svg/eye-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as Eye } from "../../resources/svg/eye.svg";
 
-interface EyeIconProps extends SVGProps<any> {
-  size: number;
-  style?: any;
-  transform?: string;
-}
-
-export const EyeIcon = (props: EyeIconProps) => {
+export const EyeIcon = (props: IconProps) => {
   return <Eye width={props.size} height={props.size} {...props} />;
 };

@@ -1,11 +1,7 @@
-import React, { SVGProps } from "react";
-import { ReactComponent as TreeNode } from "../../resources/svg/tree-node-24px.svg";
+import { IconProps } from "constants/types";
+import React from "react";
+import { ReactComponent as TreeNode } from "../../resources/svg/tree-node.svg";
 
-interface TreeNodeIconProps extends SVGProps<any> {
-  size: number;
-  style?: any;
-}
-
-export const TreeNodeIcon = (props: TreeNodeIconProps) => {
+export const TreeNodeIcon = (props: IconProps) => {
   return <TreeNode width={props.size} height={props.size} {...props} />;
 };
