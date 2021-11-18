@@ -1,3 +1,7 @@
+import { BoardIcon } from "components/icons/Board";
+import { ContactIcon } from "components/icons/Contact";
+import { PaperIcon } from "components/icons/Paper";
+import { UserIcon } from "components/icons/User";
 import React from "react";
 import "./navigation.scss";
 
@@ -8,22 +12,28 @@ export default function Navigation() {
         <div className="nav-items">
           <a draggable={false} className="nav-item-wrapper" href="#board">
             <div className="nav-item">
-              <span className="nav-item-icon">😋</span>
+              <BoardIcon size={24} className="nav-item-icon" />
               <span className="nav-item-title">Board</span>
             </div>
           </a>
           <a draggable={false} className="nav-item-wrapper" href="#about">
             <div className="nav-item">
-              <span className="nav-item-icon">🤣</span>
+              <PaperIcon size={24} className="nav-item-icon" />
               <span className="nav-item-title">About</span>
             </div>
           </a>
           <a draggable={false} className="nav-item-wrapper" href="#contact">
             <div className="nav-item">
-              <span className="nav-item-icon">🤠</span>
+              <UserIcon size={24} className="nav-item-icon" />
               <span className="nav-item-title">Contact</span>
             </div>
           </a>
+        </div>
+        <div className="sider-footer">
+          <span>You're in a resume website</span>
+          <span id="learn-more" style={{ margin: 6 }}>
+            Learn more
+          </span>
         </div>
       </nav>
     </div>
