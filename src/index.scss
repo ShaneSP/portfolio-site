@@ -1,15 +1,15 @@
-html {
+html,body {
   height: 100%;
+  margin: 0;
+  overflow: hidden;
 }
 
 body {
-  height: inherit;
   color: #000000;
   font-size: 13px;
   line-height: 1.3077;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
   Ubuntu, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  margin: 0;
 
   #root {
     height: inherit;

@@ -1,12 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, createRef, RefObject } from "react";
 import debounce from "lodash.debounce";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import {
-  BoardColumnType,
-  CardType,
-  ColumnGroupType,
-  GroupBy,
-} from "constants/types";
+import { CardType, GroupBy } from "constants/types";
 import CardDetailModal from "../modal/CardDetailModal";
 import { DropdownMenu } from "../dropdown/Dropdown";
 import {
@@ -22,7 +17,6 @@ import "./content.scss";
 import BoardGroup from "components/boardGroup/BoardGroup";
 import { LightningIcon } from "components/icons/Lightning";
 import Button from "components/button/Button";
-import { Menu } from "components/menu/Menu";
 import { EllipsisIcon } from "components/icons/Ellipsis";
 import { StarIcon } from "components/icons/Star";
 
@@ -34,21 +28,62 @@ interface ContentState {
   filterByLabel?: string;
   searchTerm?: string;
   cardDetailId?: string;
+  notAtLeft: boolean;
+  notAtRight: boolean;
 }
 
 class Content extends Component<ContentProps, ContentState> {
   debounceSearch: any = undefined;
+  scrollRef: RefObject<HTMLDivElement> = createRef();
   constructor(props) {
     super(props);
     this.state = {
       groupBy: GroupBy.ASSIGNEE,
       cards: new Map(defaultCards.map((card) => [card.id, card])),
+      notAtLeft: false,
+      notAtRight: false,
     };
   }
 
   componentDidMount() {
     this.debounceSearch = debounce(this.search, 300);
+    this.scrollRef.current?.addEventListener(
+      "scroll",
+      this.updateColumnGroupContainerClasses
+    );
   }
+
+  updateColumnGroupContainerClasses = (e) => {
+    const target = this.scrollRef.current;
+    if (target) {
+      const { notAtLeft, notAtRight } = this.state;
+      var divWidth = target.scrollWidth - target.clientWidth;
+
+      if (target.scrollLeft == 0 && notAtLeft) {
+        this.setState({
+          notAtLeft: false,
+        });
+      }
+
+      if (target.scrollLeft > 0 && !notAtLeft) {
+        this.setState({
+          notAtLeft: true,
+        });
+      }
+
+      if (target.scrollLeft < divWidth && !notAtRight) {
+        this.setState({
+          notAtRight: true,
+        });
+      }
+
+      if (target.scrollLeft == divWidth && notAtRight) {
+        this.setState({
+          notAtRight: false,
+        });
+      }
+    }
+  };
 
   componentDidUpdate(prevProps, prevState) {
     const { filterByEpic, filterByLabel } = this.state;
@@ -86,7 +121,13 @@ class Content extends Component<ContentProps, ContentState> {
     }
   }
 
-  // getList = (columnId: string) => [...this.state.cards.values()].filter(card => card.columnId === columnId);
+  componentWillUnmount() {
+    this.scrollRef.current?.removeEventListener("scroll", (e) => {
+      this.updateColumnGroupContainerClasses(
+        this.scrollRef.current?.scrollLeft
+      );
+    });
+  }
 
   onCreateByEpic =
     (epicId?: string) => (title: string, columnId: string, index: number) => {
@@ -324,8 +365,15 @@ class Content extends Component<ContentProps, ContentState> {
   };
 
   render() {
-    const { searchTerm, cardDetailId, filterByEpic, filterByLabel, groupBy } =
-      this.state;
+    const {
+      searchTerm,
+      cardDetailId,
+      filterByEpic,
+      filterByLabel,
+      groupBy,
+      notAtLeft,
+      notAtRight,
+    } = this.state;
     let activeEpicFilter;
     let activeLabelFilter;
     if (filterByEpic) {
@@ -377,6 +425,7 @@ class Content extends Component<ContentProps, ContentState> {
                 title={activeEpicFilter?.title || "Epics"}
                 items={epics}
                 onClick={this.onFilterByEpicClick}
+                style={{ marginRight: "4px" }}
               />
               <DropdownMenu
                 placeholder="Select a label"
@@ -400,17 +449,28 @@ class Content extends Component<ContentProps, ContentState> {
             />
           </div>
         </div>
-        <div className="column-group-container">
-          <div className="column-title-container">
-            {defaultColumns.map((data) => (
-              <div key={`column-title-${data.id}`} className="title-container">
-                <h3>{data.title.toUpperCase()}</h3>
-              </div>
-            ))}
+        <div
+          className={[
+            "column-parent-container",
+            notAtLeft ? "not-at-left" : "",
+            notAtRight ? "not-at-right" : "",
+          ].join(" ")}
+        >
+          <div className="column-group-container" ref={this.scrollRef}>
+            <div className="column-title-container">
+              {defaultColumns.map((data) => (
+                <div
+                  key={`column-title-${data.id}`}
+                  className="title-container"
+                >
+                  <h3>{data.title.toUpperCase()}</h3>
+                </div>
+              ))}
+            </div>
+            <DragDropContext onDragEnd={this.onDragEnd}>
+              {this.getBoardGroups()}
+            </DragDropContext>
           </div>
-          <DragDropContext onDragEnd={this.onDragEnd}>
-            {this.getBoardGroups()}
-          </DragDropContext>
         </div>
         {!!cardDetail && cardDetailId && (
           <CardDetailModal

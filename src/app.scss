@@ -14,7 +14,7 @@
 
 .app {
   display: grid;
-  height: 100%;
+  height: 100vh;
   grid-template-rows: 120px 120px auto;
   grid-template-areas:
     "header"
@@ -25,7 +25,7 @@
 @media (min-device-width: 812px) {
   .app {
     display: grid;
-    height: 100%;
+    height: 100vh;
     grid-template-rows: 72px auto;
     grid-template-columns: 250px repeat(3, 1fr);
     grid-template-areas:
