@@ -385,7 +385,7 @@ class Content extends Component<ContentProps, ContentState> {
     const cardDetail = this.getCardDetail(cardDetailId);
     return (
       <div className="content">
-        <div className="board-title-container">
+        <div id="board" className="board-title-container">
           <h1>Resume Board</h1>
           <div className="action-container">
             <Button
