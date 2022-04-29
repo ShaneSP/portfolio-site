@@ -11,7 +11,7 @@ declare type Option = {
   key: string | number;
 };
 
-export default function Filter(props: ComponentProps) {
+const Filter = (props: ComponentProps) => {
   return (
     <div className="filter">
       <button>{props.title}</button>
@@ -28,4 +28,6 @@ export default function Filter(props: ComponentProps) {
       </ul>
     </div>
   );
-}
+};
+
+export default Filter;

@@ -10,8 +10,7 @@ interface CardProps {
   onOpenDetail: () => void;
 }
 
-export default function Card(props: CardProps) {
-  const { card, index, onOpenDetail } = props;
+const Card = ({ card, index, onOpenDetail }: CardProps) => {
   const { title, description, labels, epicId } = card;
   const epic = epics.find((epic) => epic.id === epicId);
   const onClick = () => {
@@ -42,4 +41,6 @@ export default function Card(props: CardProps) {
       )}
     </Draggable>
   );
-}
+};
+
+export default Card;

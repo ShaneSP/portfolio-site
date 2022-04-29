@@ -12,12 +12,11 @@ interface ButtonProps
   className?: string;
 }
 
-export const Button = (props: ButtonProps) => {
-  const { style, icon, title, ...restProps } = props;
+export const Button = ({ style, icon, title, ...restProps }: ButtonProps) => {
   return (
-    <button style={props.style} {...restProps}>
-      {props.icon && <span className="icon">{props.icon}</span>}
-      {props.title && <span className="title">{props.title}</span>}
+    <button style={style} {...restProps}>
+      {icon && <span className="icon">{icon}</span>}
+      {title && <span className="title">{title}</span>}
     </button>
   );
 };

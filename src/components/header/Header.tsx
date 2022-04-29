@@ -1,11 +1,11 @@
+import React from "react";
 import { CogIcon } from "components/icons/Cog";
 import { GithubIcon } from "components/icons/Github";
 import { LinkedinIcon } from "components/icons/Linkedin";
-import React from "react";
 import Button from "../button/Button";
 import "./header.scss";
 
-export default function Header() {
+const Header = () => {
   return (
     <div className="header">
       <h1>Shane Steele-Pardue</h1>
@@ -28,4 +28,6 @@ export default function Header() {
       </div>
     </div>
   );
-}
+};
+
+export default Header;

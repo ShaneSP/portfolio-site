@@ -13,11 +13,16 @@ interface BoardGroupProps {
   onOpenCardDetail: (id: string) => () => void;
 }
 
-export default function BoardGroup(props: BoardGroupProps) {
-  const [isActive, setIsActive] = useState(true);
-  const { title, cards, groupById, onCreate, onOpenCardDetail } = props;
+const BoardGroup = ({
+  title,
+  cards,
+  groupById,
+  onCreate,
+  onOpenCardDetail,
+}: BoardGroupProps) => {
+  const [active, setActive] = useState(true);
   const onClick = () => {
-    setIsActive(!isActive);
+    setActive(!active);
   };
   return (
     <div className="board-group">
@@ -25,11 +30,11 @@ export default function BoardGroup(props: BoardGroupProps) {
         <ChevronDownIcon
           size={18}
           className="icon"
-          transform={isActive ? "rotate(180)" : ""}
+          transform={active ? "rotate(180)" : ""}
         />
         <h3>{title}</h3>
       </div>
-      <div className={`collapsible-board ${isActive ? "active" : ""}`}>
+      <div className={`collapsible-board ${active ? "active" : ""}`}>
         <div className="board">
           {columns.map((data) => (
             <BoardColumn
@@ -45,4 +50,6 @@ export default function BoardGroup(props: BoardGroupProps) {
       </div>
     </div>
   );
-}
+};
+
+export default BoardGroup;

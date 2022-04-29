@@ -15,7 +15,7 @@ interface DropdownMenuProps {
   className?: string;
 }
 
-export const DropdownMenu = ({
+const DropdownMenu = ({
   placeholder,
   title,
   onClick,
@@ -25,14 +25,14 @@ export const DropdownMenu = ({
   type = "default",
   className,
 }: DropdownMenuProps) => {
-  const { isActive, setIsActive, ref: dropdownRef } = useDetectOutsideClick();
+  const { active, setActive, ref: dropdownRef } = useDetectOutsideClick();
   const [isSelected, setIsSelected] = useState(false);
   const onDropdownClick = () => {
-    console.log(isActive);
-    setIsActive(!isActive);
+    console.log(active);
+    setActive(!active);
   };
   const onItemClick = (id: string) => {
-    setIsActive(!isActive);
+    setActive(!active);
     setIsSelected(true);
     if (onClick) {
       onClick(id);
@@ -41,7 +41,7 @@ export const DropdownMenu = ({
   const onClearClick = (e) => {
     e.stopPropagation();
     setIsSelected(false);
-    setIsActive(false);
+    setActive(false);
     if (onClick) {
       onClick(undefined);
     }
@@ -51,7 +51,7 @@ export const DropdownMenu = ({
     <div style={style} className={className} ref={dropdownRef}>
       <button
         onClick={onDropdownClick}
-        className={`menu-trigger ${type} ${isActive ? "active" : "inactive"}`}
+        className={`menu-trigger ${type} ${active ? "active" : "inactive"}`}
       >
         <span>{title || placeholder || "Menu"}</span>
         {showClear && isSelected ? (
@@ -64,12 +64,12 @@ export const DropdownMenu = ({
           <ChevronDownIcon
             size={12}
             style={{ marginLeft: 5 }}
-            transform={isActive ? "rotate(180)" : ""}
+            transform={active ? "rotate(180)" : ""}
             strokeWidth={type === "primary" ? "4" : undefined}
           />
         )}
       </button>
-      <nav className={`menu ${isActive ? "active" : "inactive"}`}>
+      <nav className={`menu ${active ? "active" : "inactive"}`}>
         <ul className="dropdown">
           {items &&
             items.map((item) => (
@@ -82,3 +82,5 @@ export const DropdownMenu = ({
     </div>
   );
 };
+
+export default DropdownMenu;

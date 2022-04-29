@@ -12,28 +12,25 @@ interface CollapsibleFieldsProps {
   fields: FieldType[];
 }
 
-export const CollapsibleFields = ({
-  title,
-  fields = [],
-}: CollapsibleFieldsProps) => {
-  const [isActive, setIsActive] = useState(false);
+const CollapsibleFields = ({ title, fields = [] }: CollapsibleFieldsProps) => {
+  const [active, setActive] = useState(false);
   const onClick = () => {
-    setIsActive(!isActive);
+    setActive(!active);
   };
   return (
     <div className="collapsible-container">
       <div className="collapsible-action" onClick={onClick}>
         <strong>{title}</strong>
-        {!isActive && (
+        {!active && (
           <span>{fields.map((field) => field.label).join(", ")}</span>
         )}
         <ChevronDownIcon
           size={18}
           className="icon"
-          transform={isActive ? "rotate(180)" : ""}
+          transform={active ? "rotate(180)" : ""}
         />
       </div>
-      <div className={`collapsible-content ${isActive ? "active" : ""}`}>
+      <div className={`collapsible-content ${active ? "active" : ""}`}>
         {fields.map((field) => {
           return (
             <div className="field-container">
@@ -46,3 +43,5 @@ export const CollapsibleFields = ({
     </div>
   );
 };
+
+export default CollapsibleFields;

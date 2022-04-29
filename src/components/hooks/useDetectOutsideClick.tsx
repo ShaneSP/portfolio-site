@@ -6,13 +6,13 @@ import { useCallback, useEffect, useState, useRef } from "react";
  */
 export const useDetectOutsideClick = (initialState: boolean = false) => {
   const ref = useRef<any>(null);
-  const [isActive, setIsActive] = useState(initialState);
+  const [active, setActive] = useState(initialState);
 
   const onClick = useCallback(
     (e: MouseEvent) => {
       // If the active element exists and is clicked outside of
       if (ref && ref.current && !ref.current.contains(e.target)) {
-        setIsActive(false);
+        setActive(false);
       }
     },
     [ref.current]
@@ -20,14 +20,14 @@ export const useDetectOutsideClick = (initialState: boolean = false) => {
 
   useEffect(() => {
     // If the item is active (ie open) then listen for clicks outside
-    if (isActive) {
+    if (active) {
       window.addEventListener("click", onClick, true);
     }
 
     return () => {
       window.removeEventListener("click", onClick, true);
     };
-  }, [isActive, ref.current]);
+  }, [active, ref.current]);
 
-  return { isActive, setIsActive, ref };
+  return { active, setActive, ref };
 };

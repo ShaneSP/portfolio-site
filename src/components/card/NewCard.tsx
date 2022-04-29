@@ -10,11 +10,10 @@ interface NewCardProps {
   index: number;
 }
 
-export default function NewCard(props: NewCardProps) {
-  const { card, onSave } = props;
+const NewCard = ({ card, onSave }: NewCardProps) => {
   const { labels, epicId } = card;
   const [title, setTitle] = useState<string>();
-  const { isActive, setIsActive, ref } = useDetectOutsideClick(true);
+  const { active, setActive, ref } = useDetectOutsideClick(true);
   const textAreaRef = createRef<HTMLTextAreaElement>();
   const epic = epics.find((epic) => epic.id === epicId);
   const onKeyDown = (e) => {
@@ -33,10 +32,10 @@ export default function NewCard(props: NewCardProps) {
     }
   });
   useEffect(() => {
-    if (!isActive) {
+    if (!active) {
       onSave();
     }
-  }, [isActive]);
+  }, [active]);
   return (
     <>
       <div className="card" ref={ref}>
@@ -62,4 +61,6 @@ export default function NewCard(props: NewCardProps) {
       </div>
     </>
   );
-}
+};
+
+export default NewCard;

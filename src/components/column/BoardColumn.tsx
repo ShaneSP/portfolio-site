@@ -16,16 +16,21 @@ interface BoardColumnProps {
   onOpenCardDetail: (id: string) => () => void;
 }
 
-export default function BoardColumn(props: BoardColumnProps) {
-  const { id, droppableId, cards, onOpenCardDetail } = props;
+const BoardColumn = ({
+  id,
+  droppableId,
+  cards,
+  onCreate,
+  onOpenCardDetail,
+}: BoardColumnProps) => {
   const [tempCard, setTempCard] = useState<CardType>();
   const onSave = (title?: string) => {
     setTempCard(undefined);
     if (title) {
-      props.onCreate(title, id, cards.length);
+      onCreate(title, id, cards.length);
     }
   };
-  const onCreate = () => {
+  const handleCreate = () => {
     setTempCard(createCard("", id, cards.length));
   };
   return (
@@ -56,7 +61,7 @@ export default function BoardColumn(props: BoardColumnProps) {
             )}
             <div
               className="create-card"
-              onClick={onCreate}
+              onClick={handleCreate}
               style={{
                 visibility: snapshot.isDraggingOver
                   ? "hidden"
@@ -74,4 +79,6 @@ export default function BoardColumn(props: BoardColumnProps) {
       </Droppable>
     </div>
   );
-}
+};
+
+export default BoardColumn;

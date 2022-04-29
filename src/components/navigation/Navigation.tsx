@@ -1,11 +1,10 @@
+import React from "react";
 import { BoardIcon } from "components/icons/Board";
-import { ContactIcon } from "components/icons/Contact";
 import { PaperIcon } from "components/icons/Paper";
 import { UserIcon } from "components/icons/User";
-import React from "react";
 import "./navigation.scss";
 
-export default function Navigation() {
+const Navigation = () => {
   return (
     <div>
       <nav className="sider">
@@ -38,4 +37,6 @@ export default function Navigation() {
       </nav>
     </div>
   );
-}
+};
+
+export default Navigation;
