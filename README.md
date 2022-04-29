@@ -1,11 +1,23 @@
-**New Technologies to try:**
+# Portfolio Website README
 
-_may not be applicable_
+## Description
+Single-page webapp for displaying my resume in an interactive format. This site is meant to evoke a similar user experience as that of Atlassian's [Jira Software](https://www.atlassian.com/software/jira).
 
-- webpack
-- GraphQL
+## Setup
+_Steps for setting things up_
 
-**TODO:**
+1. Install [NodeJS](https://nodejs.org/en/download/)
+2. Install `npm` packages
 
-- make a little "SSP" or "S" logo to precede the header title
-- mobile first CSS
+```
+npm install
+```
+
+3. Run development build
+
+```
+npm run start
+```
+
+## Trello Board
+_If you'd like to follow development or see how I self-managed this project, check out my Trello board [here](https://trello.com/b/f18kQoPx/resume-website)._
